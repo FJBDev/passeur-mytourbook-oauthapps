@@ -66,3 +66,7 @@ async function retrieveToken(grantType, code, refreshToken) {
     console.error('Access Token Error', error.message);
   }
 }
+
+app.get('/', async (request, response) => {
+  response.redirect(callbackUrl);
+})
