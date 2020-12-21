@@ -67,5 +67,5 @@ async function retrieveToken(grantType, code, refreshToken) {
 }
 
 app.get('/', async (request, response) => {
-  response.send('<a href="http://mytourbook.sourceforge.net/mytourbook/">http://mytourbook.sourceforge.net/mytourbook/</a>');
+  response.redirect('http://mytourbook.sourceforge.net/mytourbook/');
 })
