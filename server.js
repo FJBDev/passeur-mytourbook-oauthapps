@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json());// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
-const callbackUrl = 'http://mytourbook.sourceforge.net';
+const callbackUrl = 'https://passeur-mytourbook-strava.herokuapp.com';
 
 const client = new AuthorizationCode({
   client: {
@@ -50,7 +50,6 @@ app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
 })
 
-
 async function retrieveToken(grantType, code, refreshToken) {
   options = {
     code: code,
@@ -68,5 +67,5 @@ async function retrieveToken(grantType, code, refreshToken) {
 }
 
 app.get('/', async (request, response) => {
-  response.redirect(callbackUrl);
+  response.send('<a href="http://mytourbook.sourceforge.net/mytourbook/">http://mytourbook.sourceforge.net/mytourbook/</a>');
 })
