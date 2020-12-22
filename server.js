@@ -23,15 +23,20 @@ const client = new AuthorizationCode({
   },
 });
 
-app.post("/token", (request, response) => {
+app.post("/token", async (request, response) => {
   const { code, refresh_token, grant_type } = request.body;
 
-  retrieveToken(grant_type, code, refresh_token)
-    .then(tokenResponse => {
-      let tokenCopy = JSON.parse(JSON.stringify(tokenResponse));
-      tokenCopy.expires_at = tokenResponse.token.expires_at.getTime().toString();
-      response.status(201).send(tokenCopy);
-    });
+  const tokenResponse = await retrieveToken(grant_type, code, refresh_token);
+
+  if (tokenResponse == null) {
+    response.status(400).send();
+    return;
+  }
+
+  let tokenCopy = JSON.parse(JSON.stringify(tokenResponse));
+  tokenCopy.expires_at = tokenResponse.token.expires_at.getTime().toString();
+
+  response.status(201).send(tokenCopy);
 })
 
 // Initial page redirecting to Strava
@@ -58,6 +63,7 @@ async function retrieveToken(grantType, code, refreshToken) {
   };
 
   try {
+
     const tokenResponse = await client.getToken(options);
 
     return tokenResponse;
