@@ -69,7 +69,7 @@ app.get("/strava/authorize", async (req, res) => {
 
 app.get("/suunto/authorize", async (req, res) => {
 
-  const authorizationUri = stravaClient.authorizeURL({
+  const authorizationUri = suuntoClient.authorizeURL({
     redirect_uri: suuntoCallbackUrl,
     response_type: 'code',
   });
