@@ -66,17 +66,6 @@ app.get("/strava/authorize", async (req, res) => {
   res.redirect(authorizationUri);
 })
 
-
-app.get("/suunto/authorize", async (req, res) => {
-
-  const authorizationUri = suuntoClient.authorizeURL({
-    redirect_uri: suuntoCallbackUrl,
-    response_type: 'code',
-  });
-
-  res.redirect(authorizationUri);
-})
-
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
 })
