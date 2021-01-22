@@ -22,6 +22,23 @@ const stravaClient = new AuthorizationCode({
   },
 });
 
+const suuntoCallbackUrl = 'http://localhost:4919';
+const suuntoClient = new AuthorizationCode({
+  client: {
+    id: process.env.SUUNTO_CLIENT_ID,
+    secret: process.env.SUUNTO_CLIENT_SECRET
+  },
+  auth: {
+    tokenHost: 'https://www.strava.com/api/v3',
+    authorizeHost: 'https://www.strava.com/oauth',
+    tokenPath: '/oauth/token',
+    authorizePath: '/oauth/authorize',
+  },
+  options: {
+    authorizationMethod: 'body',
+  },
+});
+
 app.post("/strava/token", async (request, response) => {
   const { code, refresh_token, grant_type } = request.body;
 
@@ -38,13 +55,23 @@ app.post("/strava/token", async (request, response) => {
   response.status(201).send(tokenCopy);
 })
 
-// Initial page redirecting to Strava
 app.get("/strava/authorize", async (req, res) => {
 
   const authorizationUri = stravaClient.authorizeURL({
     redirect_uri: stravaCallbackUrl,
     response_type: 'code',
     scope: 'read,activity:write'
+  });
+
+  res.redirect(authorizationUri);
+})
+
+
+app.get("/suunto/authorize", async (req, res) => {
+
+  const authorizationUri = stravaClient.authorizeURL({
+    redirect_uri: suuntoCallbackUrl,
+    response_type: 'code',
   });
 
   res.redirect(authorizationUri);
