@@ -19,6 +19,7 @@ const stravaClient = new AuthorizationCode({
   },
 });
 
+const suuntoCallbackUrl = 'http://localhost:4919';
 const suuntoClient = new AuthorizationCode({
   client: {
     id: process.env.SUUNTO_CLIENT_ID,
@@ -90,7 +91,8 @@ async function retrieveSuuntoToken(grantType, code, refreshToken) {
   options = {
     code: code,
     refresh_token: refreshToken,
-    grant_type: grantType
+    grant_type: grantType,
+    redirect_uri: suuntoCallbackUrl
   };
 
   try {
