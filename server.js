@@ -5,9 +5,8 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json());// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
-const callbackUrl = 'http://localhost:4918';
-
-const client = new AuthorizationCode({
+const stravaCallbackUrl = 'http://localhost:4918';
+const stravaClient = new AuthorizationCode({
   client: {
     id: process.env.STRAVA_CLIENT_ID,
     secret: process.env.STRAVA_CLIENT_SECRET
@@ -23,7 +22,7 @@ const client = new AuthorizationCode({
   },
 });
 
-app.post("/token", async (request, response) => {
+app.post("/strava/token", async (request, response) => {
   const { code, refresh_token, grant_type } = request.body;
 
   const tokenResponse = await retrieveToken(grant_type, code, refresh_token);
@@ -40,10 +39,10 @@ app.post("/token", async (request, response) => {
 })
 
 // Initial page redirecting to Strava
-app.get("/authorize", async (req, res) => {
+app.get("/strava/authorize", async (req, res) => {
 
-  const authorizationUri = client.authorizeURL({
-    redirect_uri: callbackUrl,
+  const authorizationUri = stravaClient.authorizeURL({
+    redirect_uri: stravaCallbackUrl,
     response_type: 'code',
     scope: 'read,activity:write'
   });
@@ -55,7 +54,7 @@ app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
 })
 
-async function retrieveToken(grantType, code, refreshToken) {
+async function retrieveStravaToken(grantType, code, refreshToken) {
   options = {
     code: code,
     refresh_token: refreshToken,
@@ -64,7 +63,7 @@ async function retrieveToken(grantType, code, refreshToken) {
 
   try {
 
-    const tokenResponse = await client.getToken(options);
+    const tokenResponse = await stravaClient.getToken(options);
 
     return tokenResponse;
   } catch (error) {
