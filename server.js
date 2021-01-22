@@ -49,6 +49,22 @@ app.post("/strava/token", async (request, response) => {
   response.status(201).send(tokenCopy);
 })
 
+app.post("/suunto/token", async (request, response) => {
+  const { code, refresh_token, grant_type } = request.body;
+
+  const tokenResponse = await retrieveSuuntoToken(grant_type, code, refresh_token);
+
+  if (tokenResponse == null) {
+    response.status(400).send();
+    return;
+  }
+
+  let tokenCopy = JSON.parse(JSON.stringify(tokenResponse));
+  tokenCopy.expires_at = tokenResponse.token.expires_at.getTime().toString();
+
+  response.status(201).send(tokenCopy);
+})
+
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
 })
@@ -63,6 +79,23 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
   try {
 
     const tokenResponse = await stravaClient.getToken(options);
+
+    return tokenResponse;
+  } catch (error) {
+    console.error('Access Token Error', error.message);
+  }
+}
+
+async function retrieveSuuntoToken(grantType, code, refreshToken) {
+  options = {
+    code: code,
+    refresh_token: refreshToken,
+    grant_type: grantType
+  };
+
+  try {
+
+    const tokenResponse = await suuntoClient.getToken(options);
 
     return tokenResponse;
   } catch (error) {
