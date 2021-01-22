@@ -28,10 +28,7 @@ const suuntoClient = new AuthorizationCode({
   auth: {
     tokenHost: 'https://cloudapi-oauth.suunto.com/oauth',
     tokenPath: '/token'
-  },
-  options: {
-    authorizationMethod: 'body',
-  },
+  }
 });
 
 app.post("/strava/token", async (request, response) => {
