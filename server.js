@@ -29,10 +29,10 @@ const suuntoClient = new AuthorizationCode({
     secret: process.env.SUUNTO_CLIENT_SECRET
   },
   auth: {
-    tokenHost: 'https://www.strava.com/api/v3',
-    authorizeHost: 'https://www.strava.com/oauth',
-    tokenPath: '/oauth/token',
-    authorizePath: '/oauth/authorize',
+    tokenHost: 'https://cloudapi-oauth.suunto.com/oauth',
+    authorizeHost: 'https://cloudapi-oauth.suunto.com/oauth',
+    tokenPath: '/token',
+    authorizePath: '/authorize',
   },
   options: {
     authorizationMethod: 'body',
