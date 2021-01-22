@@ -5,7 +5,6 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json());// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
-const stravaCallbackUrl = 'http://localhost:4918';
 const stravaClient = new AuthorizationCode({
   client: {
     id: process.env.STRAVA_CLIENT_ID,
@@ -13,16 +12,13 @@ const stravaClient = new AuthorizationCode({
   },
   auth: {
     tokenHost: 'https://www.strava.com/api/v3',
-    authorizeHost: 'https://www.strava.com/oauth',
-    tokenPath: '/oauth/token',
-    authorizePath: '/oauth/authorize',
+    tokenPath: '/oauth/token'
   },
   options: {
     authorizationMethod: 'body',
   },
 });
 
-const suuntoCallbackUrl = 'http://localhost:4919';
 const suuntoClient = new AuthorizationCode({
   client: {
     id: process.env.SUUNTO_CLIENT_ID,
@@ -30,9 +26,7 @@ const suuntoClient = new AuthorizationCode({
   },
   auth: {
     tokenHost: 'https://cloudapi-oauth.suunto.com/oauth',
-    authorizeHost: 'https://cloudapi-oauth.suunto.com/oauth',
-    tokenPath: '/token',
-    authorizePath: '/authorize',
+    tokenPath: '/token'
   },
   options: {
     authorizationMethod: 'body',
@@ -53,17 +47,6 @@ app.post("/strava/token", async (request, response) => {
   tokenCopy.expires_at = tokenResponse.token.expires_at.getTime().toString();
 
   response.status(201).send(tokenCopy);
-})
-
-app.get("/strava/authorize", async (req, res) => {
-
-  const authorizationUri = stravaClient.authorizeURL({
-    redirect_uri: stravaCallbackUrl,
-    response_type: 'code',
-    scope: 'read,activity:write'
-  });
-
-  res.redirect(authorizationUri);
 })
 
 app.listen(PORT, () => {
