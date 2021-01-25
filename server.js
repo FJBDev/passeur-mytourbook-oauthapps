@@ -1,5 +1,7 @@
 var PORT = process.env.PORT || 5000;
 var express = require('express');
+var axios = require('axios');
+var qs = require('qs');
 var app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());// for parsing application/json
@@ -11,23 +13,10 @@ const stravaClient = new AuthorizationCode({
     secret: process.env.STRAVA_CLIENT_SECRET
   },
   auth: {
-    tokenHost: 'https://www.strava.com/api/v3',
-    tokenPath: '/oauth/token'
+    tokenHost: 'https://www.strava.com/api/v3'
   },
   options: {
-    authorizationMethod: 'body',
-  },
-});
-
-const suuntoCallbackUrl = 'http://localhost:4919';
-const suuntoClient = new AuthorizationCode({
-  client: {
-    id: process.env.SUUNTO_CLIENT_ID,
-    secret: process.env.SUUNTO_CLIENT_SECRET
-  },
-  auth: {
-    tokenHost: 'https://cloudapi-oauth.suunto.com/oauth',
-    tokenPath: '/token'
+    authorizationMethod: 'body'
   }
 });
 
@@ -48,19 +37,39 @@ app.post("/strava/token", async (request, response) => {
 })
 
 app.post("/suunto/token", async (request, response) => {
+
   const { code, refresh_token, grant_type } = request.body;
 
-  const tokenResponse = await retrieveSuuntoToken(grant_type, code, refresh_token);
+  const suuntoCallbackUrl = 'http://localhost:4919';
 
-  if (tokenResponse == null) {
-    response.status(400).send();
-    return;
-  }
+  var data = qs.stringify({
+    'grant_type': grant_type,
+    'code': code,
+    'redirect_uri': suuntoCallbackUrl,
+    'refresh_token': refresh_token
+  });
 
-  let tokenCopy = JSON.parse(JSON.stringify(tokenResponse));
-  tokenCopy.expires_at = tokenResponse.token.expires_at.getTime().toString();
+  var clientId = process.env.SUUNTO_CLIENT_ID;
+  var clientSecret = process.env.SUUNTO_CLIENT_SECRET;
+  var authorizationHeader = 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
+  var config = {
+    method: 'post',
+    url: 'https://cloudapi-oauth.suunto.com/oauth/token',
+    headers: {
+      'Authorization': authorizationHeader,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    data: data,
+  };
 
-  response.status(201).send(tokenCopy);
+  axios(config)
+    .then(function (result) {
+      response.status(201).send(result.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+      response.status(400).send();
+    });
 })
 
 app.listen(PORT, () => {
@@ -77,24 +86,6 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
   try {
 
     const tokenResponse = await stravaClient.getToken(options);
-
-    return tokenResponse;
-  } catch (error) {
-    console.error('Access Token Error', error.message);
-  }
-}
-
-async function retrieveSuuntoToken(grantType, code, refreshToken) {
-  options = {
-    code: code,
-    refresh_token: refreshToken,
-    grant_type: grantType,
-    redirect_uri: suuntoCallbackUrl
-  };
-
-  try {
-
-    const tokenResponse = await suuntoClient.getToken(options);
 
     return tokenResponse;
   } catch (error) {
