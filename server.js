@@ -76,7 +76,7 @@ const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2';
 
 app.post("/suunto/route/import", async (request, response) => {
 
-  const { authorization, gpxroute } = request.headers;
+  const { authorization } = request.headers;
 
   var config = {
     method: 'post',
@@ -86,7 +86,7 @@ app.post("/suunto/route/import", async (request, response) => {
       'Content-Type': 'application/gpx+xml',
       'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
     },
-    data: gpxroute
+    data: request.body.gpxRoute
   };
 
   axios(config)
