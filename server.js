@@ -86,7 +86,7 @@ app.post("/suunto/route/import", async (request, response) => {
       'Content-Type': 'application/gpx+xml',
       'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
     },
-    data: request.body.gpxRoute
+    data: Buffer.from(request.body.gpxRoute, "utf8")
   };
 
   axios(config)
