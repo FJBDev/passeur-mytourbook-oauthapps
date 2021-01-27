@@ -72,6 +72,36 @@ app.post("/suunto/token", async (request, response) => {
     });
 })
 
+const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2';
+
+app.post("/suunto/route/import", async (request, response) => {
+
+  const { authorization, gpxroute } = request.headers;
+
+  var config = {
+    method: 'post',
+    url: suuntoBaseUrl + '/route/import',
+    headers: {
+      'Authorization': authorization,
+      'Content-Type': 'application/gpx+xml',
+      'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
+    },
+    data: gpxroute
+  };
+
+  axios(config)
+    .then(function (result) {
+      response.status(201).send(result.data);
+    })
+    .catch(function (error) {
+      if (error.response) {
+        response.status(error.response.status).send(error.message);
+      } else {
+        response.status(400).send(error.message);
+      }
+    });
+})
+
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
 })
