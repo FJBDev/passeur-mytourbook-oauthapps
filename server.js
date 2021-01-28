@@ -108,7 +108,7 @@ app.get("/suunto/workouts", async (request, response) => {
 
   var config = {
     method: 'get',
-    url: suuntoBaseUrl + '/workouts?limit=5000',
+    url: suuntoBaseUrl + '/workouts?limit=10000filter-by-modification-time=false',
     headers: {
       'Authorization': authorization,
       'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
