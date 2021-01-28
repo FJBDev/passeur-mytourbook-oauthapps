@@ -102,7 +102,7 @@ app.post("/suunto/route/import", async (request, response) => {
     });
 })
 
-app.post("/suunto/workouts", async (request, response) => {
+app.get("/suunto/workouts", async (request, response) => {
 
   const { authorization } = request.headers;
 
