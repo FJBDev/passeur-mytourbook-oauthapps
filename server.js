@@ -102,6 +102,32 @@ app.post("/suunto/route/import", async (request, response) => {
     });
 })
 
+app.post("/suunto/workouts", async (request, response) => {
+
+  const { authorization } = request.headers;
+
+  var config = {
+    method: 'get',
+    url: suuntoBaseUrl + '/workouts?limit=5000',
+    headers: {
+      'Authorization': authorization,
+      'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
+    }
+  };
+
+  axios(config)
+    .then(function (result) {
+      response.status(200).send(result.data);
+    })
+    .catch(function (error) {
+      if (error.response) {
+        response.status(error.response.status).send(error.message);
+      } else {
+        response.status(400).send(error.message);
+      }
+    });
+})
+
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
 })
