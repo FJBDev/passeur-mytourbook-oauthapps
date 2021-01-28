@@ -4,7 +4,7 @@ var axios = require('axios');
 var qs = require('qs');
 var app = express();
 const bodyParser = require('body-parser')
-app.use(bodyParser.json());// for parsing application/json
+app.use(bodyParser.json({limit: '5mb'}));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
 const stravaClient = new AuthorizationCode({
