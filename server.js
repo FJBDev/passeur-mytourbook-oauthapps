@@ -110,7 +110,34 @@ app.get("/suunto/workouts", async (request, response) => {
   if (request.query.since) {
     url += '&since=' + request.query.since;
   }
-  console.log(url);
+
+  var config = {
+    method: 'get',
+    url: url,
+    headers: {
+      'Authorization': authorization,
+      'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
+    }
+  };
+
+  axios(config)
+    .then(function (result) {
+      response.status(200).send(result.data);
+    })
+    .catch(function (error) {
+      if (error.response) {
+        response.status(error.response.status).send(error.message);
+      } else {
+        response.status(400).send(error.message);
+      }
+    });
+})
+
+app.get("/suunto/workout/exportFit", async (request, response) => {
+
+  const { authorization } = request.headers;
+
+  var url = suuntoBaseUrl + '/workout/exportFit/' + request.query.workoutKey;
 
   var config = {
     method: 'get',
