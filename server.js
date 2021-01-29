@@ -144,11 +144,16 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
     headers: {
       'Authorization': authorization,
       'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
-    }
+    },
+    responseType: 'arraybuffer',
+    responseEncoding: 'binary'
   };
 
+  const contentDisposition = 'content-disposition';
   axios(config)
     .then(function (result) {
+      response.setHeader(contentDisposition, result.headers[contentDisposition]);
+
       response.status(200).send(result.data);
     })
     .catch(function (error) {
