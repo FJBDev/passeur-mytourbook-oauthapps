@@ -67,7 +67,6 @@ app.post("/suunto/token", async (request, response) => {
       response.status(201).send(result.data);
     })
     .catch(function (error) {
-      console.log(error);
       response.status(400).send();
     });
 })
