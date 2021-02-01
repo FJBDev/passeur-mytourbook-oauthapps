@@ -40,9 +40,12 @@ app.post("/suunto/token", async (request, response) => {
 
   const { code, refresh_token, grant_type } = request.body;
 
+  const suuntoCallbackUrl = 'http://localhost:4919';
+
   var data = qs.stringify({
     'grant_type': grant_type,
     'code': code,
+    'redirect_uri': suuntoCallbackUrl,
     'refresh_token': refresh_token
   });
 
