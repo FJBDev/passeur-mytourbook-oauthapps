@@ -1,11 +1,24 @@
 var PORT = process.env.PORT || 5000;
 var express = require('express');
 var axios = require('axios');
+var crypto = require('crypto')
+var oAuth = require('oauth-1.0a')
 var qs = require('qs');
 var app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
+
+const oauth = OAuth({
+  consumer: { key: process.env.GARMIN_CONSUMER_KEY, secret: process.env.GARMIN_CONSUMER_SECRET },
+  signature_method: 'HMAC-SHA1',
+  hash_function(base_string, key) {
+    return crypto
+      .createHmac('sha1', key)
+      .update(base_string)
+      .digest('base64')
+  },
+})
 
 const stravaClient = new AuthorizationCode({
   client: {
@@ -19,6 +32,22 @@ const stravaClient = new AuthorizationCode({
     authorizationMethod: 'body'
   }
 });
+
+app.post("/garmin/unauthorizedToken", async (request, response) => {
+  const { code, refresh_token, grant_type } = request.body;
+
+  const tokenResponse = await retrieveStravaToken(grant_type, code, refresh_token);
+
+  if (tokenResponse == null) {
+    response.status(400).send();
+    return;
+  }
+
+  let tokenCopy = JSON.parse(JSON.stringify(tokenResponse));
+  tokenCopy.expires_at = tokenResponse.token.expires_at.getTime().toString();
+
+  response.status(201).send(tokenCopy);
+})
 
 app.post("/strava/token", async (request, response) => {
   const { code, refresh_token, grant_type } = request.body;
