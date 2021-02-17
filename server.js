@@ -51,7 +51,7 @@ app.post("/garmin/access_token", async (request, response) => {
 
 app.get("/garmin/wellness/activities", async (request, response) => {
 
-  const { oauthAccessToken, oauthAccessTokenSecret, uploadStartTimeInSeconds, uploadEndTimeInSeconds } = request.body;
+  const { oauthAccessToken, oauthAccessTokenSecret, uploadStartTimeInSeconds, uploadEndTimeInSeconds } = request.query;
 
   var url = 'https://apis.garmin.com/wellness-api/rest/activities?' +
     'uploadStartTimeInSeconds=' + uploadStartTimeInSeconds +
