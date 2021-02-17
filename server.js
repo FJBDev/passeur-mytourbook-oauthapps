@@ -1,23 +1,52 @@
 var PORT = process.env.PORT || 5000;
 var express = require('express');
 var axios = require('axios');
-var crypto = require('crypto')
-var oAuth = require('oauth-1.0a')
+var oauth = require('oauth');
 var qs = require('qs');
 var app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
-const oauth = OAuth({
-  consumer: { key: process.env.GARMIN_CONSUMER_KEY, secret: process.env.GARMIN_CONSUMER_SECRET },
-  signature_method: 'HMAC-SHA1',
-  hash_function(base_string, key) {
-    return crypto
-      .createHmac('sha1', key)
-      .update(base_string)
-      .digest('base64')
-  },
+const garminBasePath = 'https://connectapi.garmin.com/oauth-service/oauth';
+const oAuth = new oauth.OAuth(
+  garminBasePath + '/request_token',
+  garminBasePath + '/access_token',
+  process.env.GARMIN_CONSUMER_KEY,
+  process.env.GARMIN_CONSUMER_SECRET,
+  '1.0',
+  'http://localhost:4920',
+  'HMAC-SHA1'
+);
+
+
+app.post("/garmin/oauth/request_token", async (request, response) => {
+
+  oAuth.getOAuthRequestToken(function (error, token, secret, results) {
+    if (error) {
+      response.status(error.statusCode).send(error.data);
+      return;
+    }
+
+    response.status(200).send(JSON.stringify({ 'oauth_token': token }));
+  });
+})
+
+app.get("/garmin/wellness/activities", async (request, response) => {
+
+  const { authorization } = request.headers;
+
+  oauth.get(
+    'https://apis.garmin.com/wellness-api/rest/activities?uploadStartTimeInSeconds=1613413915&uploadEndTimeInSeconds=1613500314',
+    '',
+    '',
+    function (error, data, response2) {
+      if (error) console.error(error);
+      data = JSON.parse(data);
+      console.log(data);
+      response.status(201).send(data);
+    });
+
 })
 
 const stravaClient = new AuthorizationCode({
@@ -26,28 +55,12 @@ const stravaClient = new AuthorizationCode({
     secret: process.env.STRAVA_CLIENT_SECRET
   },
   auth: {
-    tokenHost: 'https://www.strava.com/api/v3'
+    tokenHost: 'https://www.strava.com/api/v2'
   },
   options: {
     authorizationMethod: 'body'
   }
 });
-
-app.post("/garmin/unauthorizedToken", async (request, response) => {
-  const { code, refresh_token, grant_type } = request.body;
-
-  const tokenResponse = await retrieveStravaToken(grant_type, code, refresh_token);
-
-  if (tokenResponse == null) {
-    response.status(400).send();
-    return;
-  }
-
-  let tokenCopy = JSON.parse(JSON.stringify(tokenResponse));
-  tokenCopy.expires_at = tokenResponse.token.expires_at.getTime().toString();
-
-  response.status(201).send(tokenCopy);
-})
 
 app.post("/strava/token", async (request, response) => {
   const { code, refresh_token, grant_type } = request.body;
