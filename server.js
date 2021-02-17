@@ -20,33 +20,48 @@ const oAuth = new oauth.OAuth(
 );
 
 
-app.get("/garmin/oauth/request_token", async (request, response) => {
+app.get("/garmin/request_token", async (request, response) => {
 
   oAuth.getOAuthRequestToken(function (error, token, secret, results) {
     if (error) {
       response.status(error.statusCode).send(error.data);
-      return;
-    }
 
-    response.redirect('https://connect.garmin.com/oauthConfirm?oauth_token=' + token);
+      response.status(200).send(JSON.stringify({ 'oauth_token': token, 'oauth_token_secret': secret }));
+    }
   });
+})
+
+app.post("/garmin/access_token", async (request, response) => {
+
+  const { oauth_token, oauth_token_secret, oauth_verifier } = request.body;
+
+  oAuth.getOAuthAccessToken(oauth_token,
+    oauth_token_secret,
+    oauth_verifier,
+    (error, oauthAccessToken, oauthAccessTokenSecret) => {
+      if (error) {
+        response.status(error.statusCode).send(error.data);
+        return;
+      }
+
+      response.status(200).send(JSON.stringify({ 'oauthAccessToken': oauthAccessToken, 'oauthAccessTokenSecret': oauthAccessTokenSecret }));
+    });
 })
 
 app.get("/garmin/wellness/activities", async (request, response) => {
 
-  const { authorization } = request.headers;
+  const { oauthAccessToken, oauthAccessTokenSecret } = request.body;
 
-  oauth.get(
+  oAuth.get(
     'https://apis.garmin.com/wellness-api/rest/activities?uploadStartTimeInSeconds=1613413915&uploadEndTimeInSeconds=1613500314',
-    '',
-    '',
-    function (error, data, response2) {
+    oauthAccessToken,
+    oauthAccessTokenSecret,
+    function (error, data, activitiesResponse) {
       if (error) console.error(error);
-      data = JSON.parse(data);
-      console.log(data);
-      response.status(201).send(data);
-    });
 
+      data = JSON.parse(data);
+      response.status(200).send(data);
+    });
 })
 
 const stravaClient = new AuthorizationCode({
