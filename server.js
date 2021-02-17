@@ -20,7 +20,7 @@ const oAuth = new oauth.OAuth(
 );
 
 
-app.post("/garmin/oauth/request_token", async (request, response) => {
+app.get("/garmin/oauth/request_token", async (request, response) => {
 
   oAuth.getOAuthRequestToken(function (error, token, secret, results) {
     if (error) {
@@ -28,7 +28,7 @@ app.post("/garmin/oauth/request_token", async (request, response) => {
       return;
     }
 
-    response.status(200).send(JSON.stringify({ 'oauth_token': token }));
+    response.redirect('https://connect.garmin.com/oauthConfirm?oauth_token=' + token);
   });
 })
 
