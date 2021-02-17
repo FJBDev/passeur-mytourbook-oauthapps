@@ -25,9 +25,10 @@ app.get("/garmin/request_token", async (request, response) => {
   oAuth.getOAuthRequestToken(function (error, token, secret, results) {
     if (error) {
       response.status(error.statusCode).send(error.data);
-
-      response.status(200).send(JSON.stringify({ 'oauth_token': token, 'oauth_token_secret': secret }));
+      return;
     }
+
+    response.status(200).send(JSON.stringify({ 'oauth_token': token, 'oauth_token_secret': secret }));
   });
 })
 
