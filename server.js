@@ -113,6 +113,9 @@ app.get("/suunto/workouts", async (request, response) => {
   if (request.query.since) {
     url += '&since=' + request.query.since;
   }
+  if (request.query.until) {
+    url += '&until=' + request.query.until;
+  }
 
   var config = {
     method: 'get',
