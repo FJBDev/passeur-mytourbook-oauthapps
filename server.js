@@ -196,3 +196,40 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
 app.get('/', async (request, response) => {
   response.redirect('http://mytourbook.sourceforge.net/mytourbook/');
 })
+
+app.get("openweathermap/timemachine", async (request, response) => {
+
+  if (!request.query.toString.includes('toto')) {
+    response.status(200).send(result.data);
+    return;
+  }
+  const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/2.5/onecall/timemachine';
+  var url = suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
+  if (request.query.since) {
+    url += '&since=' + request.query.since;
+  }
+  if (request.query.until) {
+    url += '&until=' + request.query.until;
+  }
+
+  var config = {
+    method: 'get',
+    url: url,
+    headers: {
+      'Authorization': authorization,
+      'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
+    }
+  };
+
+  axios(config)
+    .then(function (result) {
+      response.status(200).send(result.data);
+    })
+    .catch(function (error) {
+      if (error.response) {
+        response.status(error.response.status).send(error.message);
+      } else {
+        response.status(400).send(error.message);
+      }
+    });
+})
