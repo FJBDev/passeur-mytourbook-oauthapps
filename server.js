@@ -7,6 +7,14 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
+app.listen(PORT, () => {
+  console.log(`Currently listening to any requests from MyTourbook`);
+})
+
+app.get('/', async (request, response) => {
+  response.redirect('http://mytourbook.sourceforge.net/mytourbook/');
+})
+
 const stravaClient = new AuthorizationCode({
   client: {
     id: process.env.STRAVA_CLIENT_ID,
@@ -172,10 +180,6 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
     });
 })
 
-app.listen(PORT, () => {
-  console.log(`Currently listening to any requests from MyTourbook`);
-})
-
 async function retrieveStravaToken(grantType, code, refreshToken) {
   options = {
     code: code,
@@ -193,32 +197,28 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
   }
 }
 
-app.get('/', async (request, response) => {
-  response.redirect('http://mytourbook.sourceforge.net/mytourbook/');
-})
+app.get("/openweathermap/timemachine", async (request, response) => {
 
-app.get("openweathermap/timemachine", async (request, response) => {
-
-  if (!request.query.toString.includes('toto')) {
-    response.status(200).send(result.data);
+  if (!request.query.units || request.query.units !== 'metric') {
+    response.status(400).send("Error");
     return;
   }
   const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/2.5/onecall/timemachine';
-  var url = suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
-  if (request.query.since) {
-    url += '&since=' + request.query.since;
+  var url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
+
+  if (request.query.lat) {
+    url += '&lat=' + request.query.lat;
   }
-  if (request.query.until) {
-    url += '&until=' + request.query.until;
+  if (request.query.lon) {
+    url += '&lon=' + request.query.lon;
+  }
+  if (request.query.dt) {
+    url += '&dt=' + request.query.dt;
   }
 
   var config = {
     method: 'get',
-    url: url,
-    headers: {
-      'Authorization': authorization,
-      'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
-    }
+    url: url
   };
 
   axios(config)
