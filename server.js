@@ -215,6 +215,9 @@ app.get("/openweathermap/timemachine", async (request, response) => {
   if (request.query.dt) {
     url += '&dt=' + request.query.dt;
   }
+  if (request.query.lang) {
+    url += '&lang=' + request.query.lang;
+  }
 
   var config = {
     method: 'get',
