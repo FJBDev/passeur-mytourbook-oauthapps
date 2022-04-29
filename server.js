@@ -241,3 +241,42 @@ app.get("/openweathermap/timemachine", async (request, response) => {
       }
     });
 })
+
+app.get("/weatherapi", async (request, response) => {
+
+  const weatherApiBaseUrl = 'http://api.weatherapi.com/v1/history.json';
+  var url = weatherApiBaseUrl + '?key=' + process.env.WEATHERAPI_KEY;
+
+  if (request.query.lat) {
+    url += '&q=' + request.query.lat;
+  }
+  if (request.query.lon) {
+    url += ',' + request.query.lon;
+  }
+  if (request.query.unixdt) {
+    url += '&unixdt=' + request.query.unixdt;
+  }
+  if (request.query.unixend_dt) {
+    url += '&unixend_dt=' + request.query.unixend_dt;
+  }
+  if (request.query.lang) {
+    url += '&lang=' + request.query.lang;
+  }
+
+  var config = {
+    method: 'get',
+    url: url
+  };
+
+  axios(config)
+    .then(function (result) {
+      response.status(200).send(result.data);
+    })
+    .catch(function (error) {
+      if (error.response) {
+        response.status(error.response.status).send(error.response.data);
+      } else {
+        response.status(400).send(error.message);
+      }
+    });
+})
