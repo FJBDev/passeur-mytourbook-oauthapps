@@ -230,12 +230,7 @@ app.get("/openweathermap/timemachine", async (request, response) => {
     })
     .catch(function (error) {
       if (error.response) {
-
-        let errorMessage = error.response.data.message
-          ? error.response.data.message
-          : error.message;
-
-        response.status(error.response.status).send(errorMessage);
+        response.status(error.response.status).send(error.response.data);
       } else {
         response.status(400).send(error.message);
       }
