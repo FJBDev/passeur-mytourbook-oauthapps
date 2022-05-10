@@ -248,11 +248,11 @@ app.get("/weatherapi", async (request, response) => {
   if (request.query.lon) {
     url += ',' + request.query.lon;
   }
-  if (request.query.unixdt) {
-    url += '&unixdt=' + request.query.unixdt;
+  if (request.query.dt) {
+    url += '&dt=' + request.query.unixdt;
   }
-  if (request.query.unixend_dt) {
-    url += '&unixend_dt=' + request.query.unixend_dt;
+  if (request.query.end_dt) {
+    url += '&end_dt=' + request.query.unixend_dt;
   }
   if (request.query.lang) {
     url += '&lang=' + request.query.lang;
