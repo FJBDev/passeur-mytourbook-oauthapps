@@ -249,10 +249,10 @@ app.get("/weatherapi", async (request, response) => {
     url += ',' + request.query.lon;
   }
   if (request.query.dt) {
-    url += '&dt=' + request.query.unixdt;
+    url += '&dt=' + request.query.dt;
   }
   if (request.query.end_dt) {
-    url += '&end_dt=' + request.query.unixend_dt;
+    url += '&end_dt=' + request.query.end_dt;
   }
   if (request.query.lang) {
     url += '&lang=' + request.query.lang;
