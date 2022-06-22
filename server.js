@@ -1,11 +1,11 @@
 var PORT = process.env.PORT || 5000;
-var express = require('express');
-var axios = require('axios');
-var qs = require('qs');
+import express from 'express';
+import axios from 'axios';
+import { stringify } from 'qs';
 var app = express();
-const bodyParser = require('body-parser')
-app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
-const { AuthorizationCode } = require('simple-oauth2');
+import { json } from 'body-parser';
+app.use(json({ limit: '50mb', extended: true }));// for parsing application/json
+import { AuthorizationCode } from 'simple-oauth2';
 
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
@@ -50,7 +50,7 @@ app.post("/suunto/token", async (request, response) => {
 
   const suuntoCallbackUrl = 'http://localhost:4919';
 
-  var data = qs.stringify({
+  var data = stringify({
     'grant_type': grant_type,
     'code': code,
     'redirect_uri': suuntoCallbackUrl,
