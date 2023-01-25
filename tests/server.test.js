@@ -7,6 +7,7 @@ describe('Our application', function () {
   it('should understand basic mathematical principles', function (done) {
 
     expect(1==1).toBe(true);
+    expect(1==2).not.toBe(true);
     // We want this test to pass.
     if (5 == 5) {
       // If the behavior is as expected, call done with no argument.
