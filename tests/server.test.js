@@ -1,10 +1,10 @@
 //import { retrieveStravaToken } from '../server.js'
 
 // This is just for organisation and reporting
-describe('Our application', function() {
+describe('Our application', function () {
 
   // This is the name of the test
-  it('should understand basic mathematical principles', function(done) {
+  it('should understand basic mathematical principles', function (done) {
 
     // We want this test to pass.
     if (5 == 5) {
