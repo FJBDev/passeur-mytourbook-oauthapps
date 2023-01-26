@@ -25,7 +25,7 @@ jobs:
         env:
           SUPER_SECRET: ${{ secrets.SuperSecret }}
         run: |
-          example-command "$SUPER_SECRET"
+          cat "$SUPER_SECRET"
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
