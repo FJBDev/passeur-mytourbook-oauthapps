@@ -2,8 +2,13 @@ var app = require('../server');
 const supertest = require('supertest');
 const requestWithSupertest = supertest(app);
 
+function getRandomArbitrary(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+
 beforeAll(() => {
-  app = app.listen(3000); // Random number is needed to avoid using same port in different tests if you run in parallel
+  app = app.listen(getRandomArbitrary(0, 65536)); // Random number is needed to avoid using same port in different tests if you run in parallel
 })
 
 afterAll(() => {
