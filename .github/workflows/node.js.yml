@@ -10,6 +10,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: passeur-mytourbook-oauthapps
 
     strategy:
       matrix:
