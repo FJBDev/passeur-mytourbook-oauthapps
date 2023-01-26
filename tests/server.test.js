@@ -40,7 +40,7 @@ describe('WeatherApi Weather Retrieval', () => {
     var yesterdayDate = getYesterdaysDate();
     var dt = yesterdayDate.toISOString().split('T')[0];
 
-    const res = await requestWithSupertest.get('/weatherapi?lat=40.263996&lon=-105.58854099999999&dt=' + dt + 'lang=fr');
+    const res = await requestWithSupertest.get('/weatherapi?lat=40.263996&lon=-105.58854099999999&dt=' + dt + '&lang=fr');
 
     expect(res.status).toEqual(200);
   });
