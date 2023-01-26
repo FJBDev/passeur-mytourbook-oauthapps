@@ -26,4 +26,5 @@ jobs:
       - run: npm run build --if-present
       - run: npm test
         env:
-          TEST_SECRET: ${{ secrets.TEST_SECRET }}
+          OPENWEATHERMAP_KEY: ${{ secrets.OPENWEATHERMAP_KEY }}
+          WEATHERAPI_KEY: ${{ secrets.WEATHERAPI_KEY }}
