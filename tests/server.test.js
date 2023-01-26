@@ -21,7 +21,8 @@ describe('OpenWeatherMap Weather Retrieval', () => {
 
     const res = await requestWithSupertest.get('/openweathermap/timemachine?units=metric&lat=40.263996&lon=-105.58854099999999&dt=1674755775');
 
-    expect(res.status).toEqual(200);
+//    expect(res.status).toEqual(200);
+    expect(process.env.OPENWEATHERMAP_KEY).toEqual(200);
   });
 
 });
