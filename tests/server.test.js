@@ -49,6 +49,4 @@ describe('WeatherApi Weather Retrieval', () => {
     expect(res.status).toEqual(200);
   });
 
-
-
 });
