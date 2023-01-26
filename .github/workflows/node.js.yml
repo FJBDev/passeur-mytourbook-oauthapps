@@ -10,6 +10,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: passeur-mytourbook-oauthapps
 
     strategy:
       matrix:
@@ -21,5 +22,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - run: npm ci
       - run: npm run build --if-present
       - run: npm test
+        env:
+          OPENWEATHERMAP_KEY: ${{ secrets.OPENWEATHERMAP_KEY }}
+          WEATHERAPI_KEY: ${{ secrets.WEATHERAPI_KEY }}
