@@ -1,6 +1,14 @@
-const app = require('../server');
+var app = require('../server');
 const supertest = require('supertest');
 const requestWithSupertest = supertest(app);
+
+beforeAll(() => {
+  app = app.listen(3000); // Random number is needed to avoid using same port in different tests if you run in parallel
+})
+
+afterAll(() => {
+  app.close()
+})
 
 describe('OpenWeatherMap Weather Retrieval', () => {
 
