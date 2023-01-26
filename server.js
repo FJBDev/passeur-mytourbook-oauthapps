@@ -275,4 +275,8 @@ app.get("/weatherapi", async (request, response) => {
       }
     });
 })
-module.exports = { app }
+const server = app.listen(3000, function () {
+  console.log("API en cours d'exécution sur le port 3000");
+});
+
+module.exports = server;
