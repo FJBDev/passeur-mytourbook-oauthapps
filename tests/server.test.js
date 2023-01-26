@@ -3,12 +3,16 @@ const supertest = require('supertest');
 const requestWithSupertest = supertest(app);
 
 function getRandomArbitrary(min, max) {
+
   return Math.floor(Math.random() * (max - min) + min);
 }
 
 function getYesterdaysDate() {
+  
   var yesterdayDate = new Date();
-  return yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+  yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+
+  return yesterdayDate
 }
 
 beforeAll(() => {
