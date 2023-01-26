@@ -8,7 +8,7 @@ function getRandomArbitrary(min, max) {
 }
 
 function getYesterdaysDate() {
-  
+
   var yesterdayDate = new Date();
   yesterdayDate.setDate(yesterdayDate.getDate() - 1);
 
@@ -28,7 +28,7 @@ describe('OpenWeatherMap Weather Retrieval', () => {
   test('GET /openweathermap should return 200', async () => {
 
     var yesterdayDate = getYesterdaysDate();
-    var dt = yesterdayDate.getTime() / 1000;
+    var dt = Math.floor(yesterdayDate.getTime() / 1000);
 
     const res = await requestWithSupertest.get('/openweathermap/timemachine?units=metric&lat=40.263996&lon=-105.58854099999999&dt=' + dt);
 
