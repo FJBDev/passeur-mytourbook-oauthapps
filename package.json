@@ -22,7 +22,7 @@
     "node": "19.5.0"
   },
   "devDependencies": {
-    "jest": "^29.3.1",
+    "jest": "^29.4.1",
     "supertest": "^6.3.3"
   }
 }
