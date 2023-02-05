@@ -27,6 +27,8 @@ describe('OpenWeatherMap Weather Retrieval', () => {
 
   test('GET /openweathermap should return 200', async () => {
 
+    expect.hasAssertions();
+    
     var yesterdayDate = getYesterdaysDate();
     var dt = Math.floor(yesterdayDate.getTime() / 1000);
 
@@ -40,6 +42,8 @@ describe('OpenWeatherMap Weather Retrieval', () => {
 describe('WeatherApi Weather Retrieval', () => {
 
   test('GET /weatherapi should return 200', async () => {
+
+    expect.hasAssertions();
 
     var yesterdayDate = getYesterdaysDate();
     var dt = yesterdayDate.toISOString().split('T')[0];
