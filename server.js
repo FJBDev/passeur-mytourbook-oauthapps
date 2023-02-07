@@ -197,7 +197,6 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
     console.error('Access Token Error', error.message);
   }
 }
-
 app.get("/openweathermap/timemachine", async (request, response) => {
 
   if (!request.query.units || request.query.units !== 'metric') {
