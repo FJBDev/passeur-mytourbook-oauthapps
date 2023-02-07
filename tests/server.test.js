@@ -28,7 +28,7 @@ describe('OpenWeatherMap Weather Retrieval', () => {
   test('GET /openweathermap should return 200', async () => {
 
     expect.hasAssertions();
-    
+
     var yesterdayDate = getYesterdaysDate();
     var dt = Math.floor(yesterdayDate.getTime() / 1000);
 
