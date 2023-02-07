@@ -83,7 +83,6 @@ app.post("/suunto/token", async (request, response) => {
       }
     });
 })
-
 const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2';
 
 app.post("/suunto/route/import", async (request, response) => {
