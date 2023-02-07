@@ -54,4 +54,3 @@ describe('WeatherApi Weather Retrieval', () => {
   });
 
 });
-
