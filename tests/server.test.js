@@ -1,5 +1,5 @@
-var app = require('../server');
-const supertest = require('supertest');
+import app, { listen, close } from '../server';
+import supertest from 'supertest';
 const requestWithSupertest = supertest(app);
 
 function getRandomArbitrary(min, max) {
@@ -16,11 +16,11 @@ function getYesterdaysDate() {
 }
 
 beforeAll(() => {
-  app = app.listen(getRandomArbitrary(0, 65536)); // Random number is needed to avoid using same port in different tests if you run in parallel
+  app = listen(getRandomArbitrary(0, 65536)); // Random number is needed to avoid using same port in different tests if you run in parallel
 })
 
 afterAll(() => {
-  app.close()
+  close()
 })
 
 describe('OpenWeatherMap Weather Retrieval', () => {
