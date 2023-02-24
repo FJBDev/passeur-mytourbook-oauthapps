@@ -8,7 +8,8 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
-const openWeatherMap = require('./app/openweathermap.js');
+const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js');
+const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
 
 // sanitize request data
 app.use(xss());
@@ -203,7 +204,8 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
   }
 }
 
-app.use("/openweathermap/timemachine", async (request, response) => openWeatherMap(request, response));
+app.use("/openweathermap/timemachine", async (request, response) => openWeatherMapTimeMachine(request, response));
+app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
 
 app.get("/weatherapi", async (request, response) => {
 
