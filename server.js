@@ -2,11 +2,16 @@ var PORT = process.env.PORT || 5000;
 var express = require('express');
 var axios = require('axios');
 var qs = require('qs');
+const xss = require('xss-clean');
 var app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
+const openWeatherMap = require('./app/openweathermap.js');
+
+// sanitize request data
+app.use(xss());
 
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
@@ -198,45 +203,7 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
   }
 }
 
-app.get("/openweathermap/timemachine", async (request, response) => {
-
-  if (!request.query.units || request.query.units !== 'metric') {
-    response.status(400).send("Error");
-    return;
-  }
-  const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/2.5/onecall/timemachine';
-  var url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
-
-  if (request.query.lat) {
-    url += '&lat=' + request.query.lat;
-  }
-  if (request.query.lon) {
-    url += '&lon=' + request.query.lon;
-  }
-  if (request.query.dt) {
-    url += '&dt=' + request.query.dt;
-  }
-  if (request.query.lang) {
-    url += '&lang=' + request.query.lang;
-  }
-
-  var config = {
-    method: 'get',
-    url: url
-  };
-
-  axios(config)
-    .then(function (result) {
-      response.status(200).send(result.data);
-    })
-    .catch(function (error) {
-      if (error.response) {
-        response.status(error.response.status).send(error.response.data);
-      } else {
-        response.status(400).send(error.message);
-      }
-    });
-})
+app.use("/openweathermap/timemachine", async (request, response) => openWeatherMap(request, response));
 
 app.get("/weatherapi", async (request, response) => {
 
