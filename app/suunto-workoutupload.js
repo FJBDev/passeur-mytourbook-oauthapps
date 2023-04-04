@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-function workoutUpload(request, response) {
+function initializeUpload(request, response) {
 
     const { authorization } = request.headers;
 
@@ -27,4 +27,4 @@ function workoutUpload(request, response) {
         });
 }
 
-module.exports = workoutUpload;
+module.exports = initializeUpload;
