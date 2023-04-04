@@ -11,7 +11,8 @@ function initializeUpload(request, response) {
             'Authorization': authorization,
             'Content-Type': 'application/json',
             'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
-        }
+        },
+        data: request.body
     };
 
     axios(config)
@@ -20,7 +21,7 @@ function initializeUpload(request, response) {
         })
         .catch(function (error) {
             if (error.response) {
-                response.status(error.response.status).send(error.message);
+                response.status(error.response.status).send(error.response.data.message);
             } else {
                 response.status(400).send(error.message);
             }
