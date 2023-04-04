@@ -17,7 +17,7 @@ function initializeUpload(request, response) {
 
     axios(config)
         .then(function (result) {
-            response.status(201).send(result.data);
+            response.status(error.response.status).send(result.data);
         })
         .catch(function (error) {
             if (error.response) {
