@@ -11,7 +11,7 @@ const { AuthorizationCode } = require('simple-oauth2');
 const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js');
 const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
 
-const suuntoWorkoutUpload = require('./app/suunto-workoutudpload.js');
+const suuntoWorkoutUpload = require('./app/suunto-workoutupload.js');
 
 // sanitize request data
 app.use(xss());
