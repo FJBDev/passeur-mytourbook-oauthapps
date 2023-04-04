@@ -11,6 +11,8 @@ const { AuthorizationCode } = require('simple-oauth2');
 const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js');
 const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
 
+const suuntoWorkoutUpload = require('./app/suunto-workoutupload.js');
+
 // sanitize request data
 app.use(xss());
 
@@ -206,6 +208,8 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
 
 app.use("/openweathermap/timemachine", async (request, response) => openWeatherMapTimeMachine(request, response));
 app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
+
+app.use("/suunto/workout/upload", async (request, response) => suuntoWorkoutUpload(request, response));
 
 app.get("/weatherapi", async (request, response) => {
 
