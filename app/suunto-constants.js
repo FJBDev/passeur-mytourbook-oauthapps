@@ -1,4 +1,12 @@
-export const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2/';
+function define(name, value) {
+    Object.defineProperty(exports, name, {
+        value: value,
+        enumerable: true
+    });
+}
+
+define("suuntoBaseUrl", 'https://cloudapi.suunto.com/v2/');
+
 
 //TODO FB segregate the suunto route upload and file download to separate file
 

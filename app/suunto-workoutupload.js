@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { suuntoBaseUrl } = require('./suunto-constants');
+var constants = require("./suunto-constants");
 
 function initializeUpload(request, response) {
 
@@ -7,7 +7,7 @@ function initializeUpload(request, response) {
 
     var config = {
         method: 'post',
-        url: suuntoBaseUrl + 'upload/',
+        url: constants.suuntoBaseUrl + 'upload/',
         headers: {
             'Authorization': authorization,
             'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ function getUploadStatus(request, response) {
 
     const { authorization } = request.headers;
 
-    var url = suuntoBaseUrl + 'upload/';
+    var url = constants.suuntoBaseUrl + 'upload/';
 
     if (request.query.id) {
         url += request.query.id;
@@ -46,8 +46,7 @@ function getUploadStatus(request, response) {
             'Authorization': authorization,
             'Content-Type': 'application/json',
             'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
-        },
-        data: request.body
+        }
     };
 
     axios(config)
@@ -63,5 +62,4 @@ function getUploadStatus(request, response) {
         });
 }
 
-module.exports = initializeUpload;
-module.exports = getUploadStatus;
+module.exports = { initializeUpload, getUploadStatus };
