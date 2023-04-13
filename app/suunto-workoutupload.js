@@ -1,6 +1,5 @@
 const axios = require('axios');
 var constants = require("./suunto-constants");
-const { Console } = require('console');
 
 function initializeUpload(request, response) {
 
