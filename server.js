@@ -12,7 +12,6 @@ const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js')
 const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
 
 const { initializeUpload, getUploadStatus } = require('./app/suunto-workoutupload.js');
-var suuntoConstants = require("./app/suunto-constants");
 
 // sanitize request data
 app.use(xss());
@@ -93,13 +92,14 @@ app.post("/suunto/token", async (request, response) => {
     });
 })
 
+const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2';
 app.post("/suunto/route/import", async (request, response) => {
 
   const { authorization } = request.headers;
 
   var config = {
     method: 'post',
-    url: suuntoConstants.suuntoBaseUrl + '/route/import',
+    url: suuntoBaseUrl + '/route/import',
     headers: {
       'Authorization': authorization,
       'Content-Type': 'application/gpx+xml',
@@ -125,7 +125,7 @@ app.get("/suunto/workouts", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  var url = suuntoConstants.suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
+  var url = suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
   if (request.query.since) {
     url += '&since=' + request.query.since;
   }
