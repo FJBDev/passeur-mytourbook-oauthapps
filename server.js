@@ -99,7 +99,7 @@ app.post("/suunto/route/import", async (request, response) => {
 
   var config = {
     method: 'post',
-    url: suuntoConstants.suuntoBaseUrl + + '/route/import',
+    url: suuntoConstants.suuntoBaseUrl + '/route/import',
     headers: {
       'Authorization': authorization,
       'Content-Type': 'application/gpx+xml',
