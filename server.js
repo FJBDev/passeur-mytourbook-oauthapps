@@ -12,7 +12,7 @@ const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js')
 const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
 
 const { initializeUpload, getUploadStatus } = require('./app/suunto-workoutupload.js');
-var suuntoConstants = require("./suunto-constants");
+var suuntoConstants = require("./app/suunto-constants");
 
 // sanitize request data
 app.use(xss());
