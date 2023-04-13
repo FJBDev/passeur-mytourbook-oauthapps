@@ -208,6 +208,7 @@ app.use("/openweathermap/timemachine", async (request, response) => openWeatherM
 app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
 
 app.use("/suunto/workout/upload", async (request, response) => suuntoWorkoutUpload(request, response));
+app.use("/suunto/workout", async (request, response) => suuntoWorkoutUpload(request, response));
 
 app.get("/weatherapi", async (request, response) => {
 

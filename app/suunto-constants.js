@@ -1,4 +1,4 @@
-export const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2';
+export const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2/';
 
 //TODO FB segregate the suunto route upload and file download to separate file
 
