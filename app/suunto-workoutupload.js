@@ -1,5 +1,6 @@
 const axios = require('axios');
 var constants = require("./suunto-constants");
+const { Console } = require('console');
 
 function initializeUpload(request, response) {
 
@@ -34,9 +35,8 @@ function getUploadStatus(request, response) {
     const { authorization } = request.headers;
 
     var url = constants.suuntoBaseUrl + 'upload/';
-
-    if (request.query.id) {
-        url += request.query.id;
+    if (request.params.Id) {
+        url += request.params.Id;
     }
 
     var config = {
