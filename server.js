@@ -11,7 +11,7 @@ const { AuthorizationCode } = require('simple-oauth2');
 const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js');
 const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
 
-const suuntoWorkoutUpload = require('./app/suunto-workoutupload.js');
+const { initializeUpload, getUploadStatus } = require('./app/suunto-workoutupload.js');
 
 // sanitize request data
 app.use(xss());
@@ -91,8 +91,6 @@ app.post("/suunto/token", async (request, response) => {
       }
     });
 })
-
-const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2';
 
 app.post("/suunto/route/import", async (request, response) => {
 
@@ -209,7 +207,8 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
 app.use("/openweathermap/timemachine", async (request, response) => openWeatherMapTimeMachine(request, response));
 app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
 
-app.use("/suunto/workout/upload", async (request, response) => suuntoWorkoutUpload(request, response));
+app.post("/suunto/workout/upload", async (request, response) => initializeUpload(request, response));
+app.get("/suunto/workout/upload/:Id", async (request, response) => getUploadStatus(request, response));
 
 app.get("/weatherapi", async (request, response) => {
 
