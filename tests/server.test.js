@@ -1,6 +1,10 @@
 var app = require('../server');
 const supertest = require('supertest');
 const requestWithSupertest = supertest(app);
+var nock = require('nock');
+var example = nock('http://example.com')
+  .post('/strava/token')
+  .reply(201, { foo: 'bar' });
 
 function getRandomArbitrary(min, max) {
 
@@ -54,7 +58,6 @@ describe('OpenWeatherMap Air Quality Retrieval', () => {
 
     expect(res.status).toEqual(200);
   });
-
 });
 
 describe('WeatherApi Weather Retrieval', () => {
@@ -69,6 +72,36 @@ describe('WeatherApi Weather Retrieval', () => {
     const res = await requestWithSupertest.get('/weatherapi?lat=40.26&lon=-105.58&dt=' + dt);
 
     expect(res.status).toEqual(200);
+  });
+
+});
+
+var http = require('http');
+var options = {
+  host: 'example.com',
+  port: 80,
+  path: '/strava/token',
+  method: 'POST'
+}
+
+describe('Strava Token Retrieval', () => {
+
+  test('POST /strava/token should return 201', async () => {
+
+   // expect.hasAssertions();
+
+    var req = http.request(options, function (res) {
+      res.on('data', function (chunk) {
+        console.log('BODY: ' + chunk);
+      });
+    });
+
+    req.on('error', function (e) {
+      console.log('error: ' + e);
+    });
+    //expect(req.status).toEqual(200);
+    
+    req.end();
   });
 
 });

@@ -38,6 +38,7 @@ const stravaClient = new AuthorizationCode({
 });
 
 app.post("/strava/token", async (request, response) => {
+
   const { code, refresh_token, grant_type } = request.body;
 
   const tokenResponse = await retrieveStravaToken(grant_type, code, refresh_token);
