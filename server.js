@@ -41,6 +41,7 @@ app.post("/strava/token", async (request, response) => {
 
   const { code, refresh_token, grant_type } = request.body;
 
+  console.log("TOTOJBGKJBDEGGLKHBHHRGHGRHKG");
   const tokenResponse = await retrieveStravaToken(grant_type, code, refresh_token);
 
   if (tokenResponse == null) {
