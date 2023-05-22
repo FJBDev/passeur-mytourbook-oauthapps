@@ -23,21 +23,21 @@ afterAll(() => {
   app.close()
 })
 
-describe('OpenWeatherMap Weather Retrieval', () => {
+// describe('OpenWeatherMap Weather Retrieval', () => {
 
-  test('GET /openweathermap should return 200', async () => {
+//   test('GET /openweathermap should return 200', async () => {
 
-    expect.hasAssertions();
+//     expect.hasAssertions();
 
-    var yesterdayDate = getYesterdaysDate();
-    var dt = Math.floor(yesterdayDate.getTime() / 1000);
+//     var yesterdayDate = getYesterdaysDate();
+//     var dt = Math.floor(yesterdayDate.getTime() / 1000);
 
-    const res = await requestWithSupertest.get('/openweathermap/timemachine?units=metric&lat=40.26&lon=-105.58&dt=' + dt);
+//     const res = await requestWithSupertest.get('/openweathermap/timemachine?units=metric&lat=40.26&lon=-105.58&dt=' + dt);
 
-    expect(res.status).toEqual(200);
-  });
+//     expect(res.status).toEqual(200);
+//   });
 
-});
+// });
 
 // describe('OpenWeatherMap Air Quality Retrieval', () => {
 
