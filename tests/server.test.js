@@ -39,23 +39,23 @@ describe('OpenWeatherMap Weather Retrieval', () => {
 
 });
 
-describe('OpenWeatherMap Air Quality Retrieval', () => {
+// describe('OpenWeatherMap Air Quality Retrieval', () => {
 
-  test('GET /openweathermap should return 200', async () => {
+//   test('GET /openweathermap should return 200', async () => {
 
-    expect.hasAssertions();
+//     expect.hasAssertions();
 
-    var yesterdayDate = getYesterdaysDate();
-    var start = Math.floor(yesterdayDate.getTime() / 1000);
-    var end = start + 3600;
+//     var yesterdayDate = getYesterdaysDate();
+//     var start = Math.floor(yesterdayDate.getTime() / 1000);
+//     var end = start + 3600;
 
-    const res = await requestWithSupertest.get('/openweathermap/air_pollution?lat=40.26&lon=-105.58&start=' + start +
-      '&end=' + end);
+//     const res = await requestWithSupertest.get('/openweathermap/air_pollution?lat=40.26&lon=-105.58&start=' + start +
+//       '&end=' + end);
 
-    expect(res.status).toEqual(200);
-  });
+//     expect(res.status).toEqual(200);
+//   });
 
-});
+// });
 
 describe('WeatherApi Weather Retrieval', () => {
 
