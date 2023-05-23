@@ -205,8 +205,8 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
   }
 }
 
-//app.use("/openweathermap/timemachine", async (request, response) => openWeatherMapTimeMachine(request, response));
-//app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
+app.use("/openweathermap/timemachine", async (request, response) => openWeatherMapTimeMachine(request, response));
+app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
 
 app.post("/suunto/workout/upload", async (request, response) => initializeUpload(request, response));
 app.get("/suunto/workout/upload/:Id", async (request, response) => getUploadStatus(request, response));
