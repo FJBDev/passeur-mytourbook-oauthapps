@@ -2,7 +2,7 @@ var PORT = process.env.PORT || 5000;
 var express = require('express');
 var axios = require('axios');
 var qs = require('qs');
-const xss = require('xss-clean');
+const xss = require('xss');
 var app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
