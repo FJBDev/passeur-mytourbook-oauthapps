@@ -6,16 +6,16 @@ function airPollution(request, response) {
     var url = openWeatherMapBaseUrl + '?appid=' + process.env.OPENWEATHERMAP_KEY;
 
     if (request.query.lat) {
-        url += '&lat=' + request.query.lat;
+        url += '&lat=' + xss(request.query.lat);
     }
     if (request.query.lon) {
-        url += '&lon=' + request.query.lon;
+        url += '&lon=' + xss(request.query.lon);
     }
     if (request.query.start) {
-        url += '&start=' + request.query.start;
+        url += '&start=' + xss(request.query.start);
     }
     if (request.query.end) {
-        url += '&end=' + request.query.end;
+        url += '&end=' + xss(request.query.end);
     }
     var config = {
         method: 'get',

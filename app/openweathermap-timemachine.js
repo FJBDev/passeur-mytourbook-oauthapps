@@ -2,7 +2,7 @@ const axios = require('axios');
 
 function timeMachine(request, response) {
 
-    if (!request.query.units || request.query.units !== 'metric') {
+    if (!request.query.units || xss(request.query.units) !== 'metric') {
         response.status(400).send("Error");
         return;
     }
@@ -10,16 +10,16 @@ function timeMachine(request, response) {
     var url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
 
     if (request.query.lat) {
-        url += '&lat=' + request.query.lat;
+        url += '&lat=' + xss(request.query.lat);
     }
     if (request.query.lon) {
-        url += '&lon=' + request.query.lon;
+        url += '&lon=' + xss(request.query.lon);
     }
     if (request.query.dt) {
-        url += '&dt=' + request.query.dt;
+        url += '&dt=' + xss(request.query.dt);
     }
     if (request.query.lang) {
-        url += '&lang=' + request.query.lang;
+        url += '&lang=' + xss(request.query.lang);
     }
 
     var config = {
