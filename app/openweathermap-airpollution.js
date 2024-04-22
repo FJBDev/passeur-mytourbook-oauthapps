@@ -2,7 +2,7 @@ const axios = require('axios');
 
 function airPollution(request, response) {
 
-    const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/3/air_pollution/history';
+    const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/2.5/air_pollution/history';
     var url = openWeatherMapBaseUrl + '?appid=' + process.env.OPENWEATHERMAP_KEY;
 
     if (request.query.lat) {
