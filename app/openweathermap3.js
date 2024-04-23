@@ -1,13 +1,16 @@
 const axios = require('axios');
 const xss = require('xss');
 
-function timeMachine(request, response) {
+function timeMachine(request, response, isTimemachine) {
 
     if (!request.query.units || xss(request.query.units) !== 'metric') {
         response.status(400).send("Error");
         return;
     }
-    const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/3.0/onecall/timemachine';
+    var openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/3.0/onecall';
+    if (isTimemachine) {
+        openWeatherMapBaseUrl += '/timemachine';
+    }
     var url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
 
     if (request.query.lat) {
