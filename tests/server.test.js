@@ -61,8 +61,7 @@ describe('OpenWeatherMap 3.0 Current Weather Retrieval', () => {
 
     expect.hasAssertions();
 
-    var yesterdayDate = getYesterdaysDate();
-    var dt = Math.floor(yesterdayDate.getTime() / 1000);
+    var dt = Math.floor(new Date().getTime() / 1000);
 
     const res = await requestWithSupertest.get('/openweathermap/3.0/current?units=metric&lat=40.26&lon=-105.58&dt=' + dt);
 
