@@ -7,7 +7,7 @@ function timeMachine(request, response) {
         response.status(400).send("Error");
         return;
     }
-    const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/2.5/onecall/timemachine';
+    const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/3.0/onecall/timemachine';
     var url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
 
     if (request.query.lat) {
