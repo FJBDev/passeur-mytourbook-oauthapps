@@ -29,7 +29,6 @@ afterAll(() => {
   app.close()
 })
 
-<<<<<<< HEAD
 var http = require('http');
 const { assert } = require('console');
 var options = {
@@ -38,25 +37,6 @@ var options = {
   path: '/strava/token',
   method: 'POST'
 }
-// describe('OpenWeatherMap Weather Retrieval', () => {
-=======
-describe('OpenWeatherMap Historical Weather Retrieval', () => {
->>>>>>> origin/main
-
-//   test('GET /openweathermap should return 200', async () => {
-
-//     expect.hasAssertions();
-
-//     var yesterdayDate = getYesterdaysDate();
-//     var dt = Math.floor(yesterdayDate.getTime() / 1000);
-
-//     const res = await requestWithSupertest.get('/openweathermap/timemachine?units=metric&lat=40.26&lon=-105.58&dt=' + dt);
-
-//     expect(res.status).toEqual(200);
-//   });
-
-// });
-
 describe('OpenWeatherMap 3.0 Current Weather Retrieval', () => {
 
   test('GET /openweathermap should return 200', async () => {
