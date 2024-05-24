@@ -57,25 +57,6 @@ describe('OpenWeatherMap Historical Weather Retrieval', () => {
 
 // });
 
-<<<<<<< HEAD
-// describe('OpenWeatherMap Air Quality Retrieval', () => {
-=======
-describe('OpenWeatherMap 3.0 Historical Weather Retrieval', () => {
-
-  test('GET /openweathermap should return 200', async () => {
-
-    expect.hasAssertions();
-
-    var yesterdayDate = getYesterdaysDate();
-    var dt = Math.floor(yesterdayDate.getTime() / 1000);
-
-    const res = await requestWithSupertest.get('/openweathermap/3.0/timemachine?units=metric&lat=40.26&lon=-105.58&dt=' + dt);
-
-    expect(res.status).toEqual(200);
-  });
-
-});
-
 describe('OpenWeatherMap 3.0 Current Weather Retrieval', () => {
 
   test('GET /openweathermap should return 200', async () => {
@@ -92,23 +73,22 @@ describe('OpenWeatherMap 3.0 Current Weather Retrieval', () => {
 });
 
 describe('OpenWeatherMap Air Quality Retrieval', () => {
->>>>>>> origin/main
 
-//   test('GET /openweathermap should return 200', async () => {
+  test('GET /openweathermap should return 200', async () => {
 
-//     expect.hasAssertions();
+    expect.hasAssertions();
 
-//     var yesterdayDate = getYesterdaysDate();
-//     var start = Math.floor(yesterdayDate.getTime() / 1000);
-//     var end = start + 3600;
+    var yesterdayDate = getYesterdaysDate();
+    var start = Math.floor(yesterdayDate.getTime() / 1000);
+    var end = start + 3600;
 
-//     const res = await requestWithSupertest.get('/openweathermap/air_pollution?lat=40.26&lon=-105.58&start=' + start +
-//       '&end=' + end);
+    const res = await requestWithSupertest.get('/openweathermap/air_pollution?lat=40.26&lon=-105.58&start=' + start +
+      '&end=' + end);
 
-//     expect(res.status).toEqual(200);
-//   });
+    expect(res.status).toEqual(200);
+  });
 
-// });
+});
 
 describe('WeatherApi Weather Retrieval', () => {
 
