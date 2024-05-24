@@ -2,19 +2,17 @@ var PORT = process.env.PORT || 5000;
 var express = require('express');
 var axios = require('axios');
 var qs = require('qs');
-const xss = require('xss-clean');
+const xss = require('xss');
 var app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
 const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js');
+const openWeatherMap3 = require('./app/openweathermap3.js');
 const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
 
 const { initializeUpload, getUploadStatus } = require('./app/suunto-workoutupload.js');
-
-// sanitize request data
-app.use(xss());
 
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
@@ -129,10 +127,10 @@ app.get("/suunto/workouts", async (request, response) => {
 
   var url = suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
   if (request.query.since) {
-    url += '&since=' + request.query.since;
+    url += '&since=' + xss(request.query.since);
   }
   if (request.query.until) {
-    url += '&until=' + request.query.until;
+    url += '&until=' + xss(request.query.until);
   }
 
   var config = {
@@ -161,7 +159,7 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  var url = suuntoBaseUrl + '/workout/exportFit/' + request.query.workoutKey;
+  var url = suuntoBaseUrl + '/workout/exportFit/' + xss(request.query.workoutKey);
 
   var config = {
     method: 'get',
@@ -208,6 +206,8 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
 }
 
 app.use("/openweathermap/timemachine", async (request, response) => openWeatherMapTimeMachine(request, response));
+app.use("/openweathermap/3.0/timemachine", async (request, response) => openWeatherMap3(request, response, true));
+app.use("/openweathermap/3.0/current", async (request, response) => openWeatherMap3(request, response, false));
 app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
 
 app.post("/suunto/workout/upload", async (request, response) => initializeUpload(request, response));
@@ -219,19 +219,19 @@ app.get("/weatherapi", async (request, response) => {
   var url = weatherApiBaseUrl + '?key=' + process.env.WEATHERAPI_KEY;
 
   if (request.query.lat) {
-    url += '&q=' + request.query.lat;
+    url += '&q=' + xss(request.query.lat);
   }
   if (request.query.lon) {
-    url += ',' + request.query.lon;
+    url += ',' + xss(request.query.lon);
   }
   if (request.query.dt) {
-    url += '&dt=' + request.query.dt;
+    url += '&dt=' + xss(request.query.dt);
   }
   if (request.query.end_dt) {
-    url += '&end_dt=' + request.query.end_dt;
+    url += '&end_dt=' + xss(request.query.end_dt);
   }
   if (request.query.lang) {
-    url += '&lang=' + request.query.lang;
+    url += '&lang=' + xss(request.query.lang);
   }
 
   var config = {
