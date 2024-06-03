@@ -20,7 +20,7 @@
     "xss": "^1.0.15"
   },
   "engines": {
-    "node": "20.9.0"
+    "node": "20.12.2"
   },
   "devDependencies": {
     "jest": "^29.7.0",
