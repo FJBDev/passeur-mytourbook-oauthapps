@@ -12,6 +12,7 @@ const { AuthorizationCode } = require('simple-oauth2');
 const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js');
 const openWeatherMap3 = require('./app/openweathermap3.js');
 const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
+
 const { initializeUpload, getUploadStatus } = require('./app/suunto-workoutupload.js');
 
 const garminBasePath = 'https://connectapi.garmin.com/oauth-service/oauth';
@@ -27,6 +28,10 @@ const oAuth = new oauth.OAuth(
 
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
+})
+
+app.get('/', async (request, response) => {
+    response.redirect('http://mytourbook.sourceforge.net/mytourbook/');
 })
 
 app.get("/garmin/request_token", async (request, response) => {
