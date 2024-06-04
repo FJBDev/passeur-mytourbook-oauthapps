@@ -3,6 +3,7 @@ var express = require('express');
 var axios = require('axios');
 var oauth = require('oauth');
 var qs = require('qs');
+const xss = require('xss');
 var app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
@@ -138,7 +139,6 @@ app.post("/suunto/token", async (request, response) => {
 })
 
 const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2';
-
 app.post("/suunto/route/import", async (request, response) => {
 
   const { authorization } = request.headers;
@@ -173,7 +173,10 @@ app.get("/suunto/workouts", async (request, response) => {
 
   var url = suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
   if (request.query.since) {
-    url += '&since=' + request.query.since;
+    url += '&since=' + xss(request.query.since);
+  }
+  if (request.query.until) {
+    url += '&until=' + xss(request.query.until);
   }
 
   var config = {
@@ -202,7 +205,7 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  var url = suuntoBaseUrl + '/workout/exportFit/' + request.query.workoutKey;
+  var url = suuntoBaseUrl + '/workout/exportFit/' + xss(request.query.workoutKey);
 
   var config = {
     method: 'get',
@@ -231,10 +234,6 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
     });
 })
 
-app.listen(PORT, () => {
-  console.log(`Currently listening to any requests from MyTourbook`);
-})
-
 async function retrieveStravaToken(grantType, code, refreshToken) {
   options = {
     code: code,
@@ -252,6 +251,51 @@ async function retrieveStravaToken(grantType, code, refreshToken) {
   }
 }
 
-app.get('/', async (request, response) => {
-  response.redirect('http://mytourbook.sourceforge.net/mytourbook/');
+app.use("/openweathermap/timemachine", async (request, response) => openWeatherMapTimeMachine(request, response));
+app.use("/openweathermap/3.0/timemachine", async (request, response) => openWeatherMap3(request, response, true));
+app.use("/openweathermap/3.0/current", async (request, response) => openWeatherMap3(request, response, false));
+app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
+
+app.post("/suunto/workout/upload", async (request, response) => initializeUpload(request, response));
+app.get("/suunto/workout/upload/:Id", async (request, response) => getUploadStatus(request, response));
+
+app.get("/weatherapi", async (request, response) => {
+
+  const weatherApiBaseUrl = 'http://api.weatherapi.com/v1/history.json';
+  var url = weatherApiBaseUrl + '?key=' + process.env.WEATHERAPI_KEY;
+
+  if (request.query.lat) {
+    url += '&q=' + xss(request.query.lat);
+  }
+  if (request.query.lon) {
+    url += ',' + xss(request.query.lon);
+  }
+  if (request.query.dt) {
+    url += '&dt=' + xss(request.query.dt);
+  }
+  if (request.query.end_dt) {
+    url += '&end_dt=' + xss(request.query.end_dt);
+  }
+  if (request.query.lang) {
+    url += '&lang=' + xss(request.query.lang);
+  }
+
+  var config = {
+    method: 'get',
+    url: url
+  };
+
+  axios(config)
+    .then(function (result) {
+      response.status(200).send(result.data);
+    })
+    .catch(function (error) {
+      if (error.response) {
+        response.status(error.response.status).send(error.response.data);
+      } else {
+        response.status(400).send(error.message);
+      }
+    });
 })
+
+module.exports = app;
