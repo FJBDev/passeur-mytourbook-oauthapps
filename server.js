@@ -9,6 +9,11 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
+const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js');
+const openWeatherMap3 = require('./app/openweathermap3.js');
+const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
+const { initializeUpload, getUploadStatus } = require('./app/suunto-workoutupload.js');
+
 const garminBasePath = 'https://connectapi.garmin.com/oauth-service/oauth';
 const oAuth = new oauth.OAuth(
   garminBasePath + '/request_token',
@@ -20,6 +25,9 @@ const oAuth = new oauth.OAuth(
   'HMAC-SHA1'
 );
 
+app.listen(PORT, () => {
+  console.log(`Currently listening to any requests from MyTourbook`);
+})
 
 app.get("/garmin/request_token", async (request, response) => {
 
@@ -76,7 +84,7 @@ const stravaClient = new AuthorizationCode({
     secret: process.env.STRAVA_CLIENT_SECRET
   },
   auth: {
-    tokenHost: 'https://www.strava.com/api/v2'
+    tokenHost: 'https://www.strava.com/api/v3'
   },
   options: {
     authorizationMethod: 'body'
