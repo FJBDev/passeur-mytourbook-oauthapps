@@ -1,6 +1,7 @@
 var PORT = process.env.PORT || 5000;
 var express = require('express');
 var axios = require('axios');
+var oauth = require('oauth');
 var qs = require('qs');
 const xss = require('xss');
 var app = express();
@@ -14,13 +15,26 @@ const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js
 
 const { initializeUpload, getUploadStatus } = require('./app/suunto-workoutupload.js');
 
+const garminBasePath = 'https://connectapi.garmin.com/oauth-service/oauth';
+const oAuth = new oauth.OAuth(
+  garminBasePath + '/request_token',
+  garminBasePath + '/access_token',
+  process.env.GARMIN_CONSUMER_KEY,
+  process.env.GARMIN_CONSUMER_SECRET,
+  '1.0',
+  'http://localhost:4920',
+  'HMAC-SHA1'
+);
+
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
 })
 
 app.get('/', async (request, response) => {
-  response.redirect('http://mytourbook.sourceforge.net/mytourbook/');
+    response.redirect('http://mytourbook.sourceforge.net/mytourbook/');
 })
+
+
 
 const stravaClient = new AuthorizationCode({
   client: {
@@ -247,6 +261,55 @@ app.get("/weatherapi", async (request, response) => {
       } else {
         response.status(400).send(error.message);
       }
+    });
+})
+
+app.get("/garmin/request_token", async (request, response) => {
+
+  oAuth.getOAuthRequestToken(function (error, token, secret, results) {
+    if (error) {
+      response.status(error.statusCode).send(error.data);
+      return;
+    }
+
+    response.status(200).send(JSON.stringify({ 'oauth_token': token, 'oauth_token_secret': secret }));
+  });
+})
+
+app.post("/garmin/access_token", async (request, response) => {
+
+  const { oauth_token, oauth_token_secret, oauth_verifier } = request.body;
+
+  oAuth.getOAuthAccessToken(oauth_token,
+    oauth_token_secret,
+    oauth_verifier,
+    (error, oauthAccessToken, oauthAccessTokenSecret) => {
+      if (error) {
+        response.status(error.statusCode).send(error.data);
+        return;
+      }
+
+      response.status(200).send(JSON.stringify({ 'oauthAccessToken': oauthAccessToken, 'oauthAccessTokenSecret': oauthAccessTokenSecret }));
+    });
+})
+
+app.get("/garmin/wellness/activities", async (request, response) => {
+
+  const { oauthAccessToken, oauthAccessTokenSecret, uploadStartTimeInSeconds, uploadEndTimeInSeconds } = request.query;
+
+  var url = 'https://apis.garmin.com/wellness-api/rest/activities?' +
+    'uploadStartTimeInSeconds=' + uploadStartTimeInSeconds +
+    '&uploadEndTimeInSeconds=' + uploadEndTimeInSeconds;
+
+  oAuth.get(
+    url,
+    oauthAccessToken,
+    oauthAccessTokenSecret,
+    function (error, data, activitiesResponse) {
+      if (error) console.error(error);
+
+      data = JSON.parse(data);
+      response.status(200).send(data);
     });
 })
 
