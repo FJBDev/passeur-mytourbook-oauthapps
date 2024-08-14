@@ -14,10 +14,10 @@ function timeMachine(request, response, isTimemachine) {
     let url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
 
     if (request.query.lat) {
-        url += '&lat=' + xss(request.query.lat);
+        url += `&lat=${xss(request.query.lat)}`;
     }
     if (request.query.lon) {
-        url += '&lon=' + xss(request.query.lon);
+        url += `&lon=${xss(request.query.lon)}`;
     }
     if (request.query.dt) {
         url += '&dt=' + xss(request.query.dt);
