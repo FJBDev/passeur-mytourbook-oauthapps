@@ -125,7 +125,7 @@ app.get("/suunto/workouts", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  let url = suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
+  let url = `${suuntoBaseUrl}/workouts?limit=10000&filter-by-modification-time=false`;
   if (request.query.since) {
     url += `&since=${xss(request.query.since)}`;
   }
@@ -159,7 +159,7 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  let url = suuntoBaseUrl + '/workout/exportFit/' + xss(request.query.workoutKey);
+  let url = `${suuntoBaseUrl}/workout/exportFit/${xss(request.query.workoutKey)}`;
 
   let config = {
     method: 'get',
