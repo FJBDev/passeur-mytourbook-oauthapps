@@ -4,7 +4,7 @@ const xss = require('xss');
 function airPollution(request, response) {
 
     const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/2.5/air_pollution/history';
-    var url = openWeatherMapBaseUrl + '?appid=' + process.env.OPENWEATHERMAP_KEY;
+    let url = openWeatherMapBaseUrl + '?appid=' + process.env.OPENWEATHERMAP_KEY;
 
     if (request.query.lat) {
         url += '&lat=' + xss(request.query.lat);
@@ -18,7 +18,7 @@ function airPollution(request, response) {
     if (request.query.end) {
         url += '&end=' + xss(request.query.end);
     }
-    var config = {
+    let config = {
         method: 'get',
         url: url
     };

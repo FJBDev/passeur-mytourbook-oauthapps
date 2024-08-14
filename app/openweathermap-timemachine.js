@@ -8,7 +8,7 @@ function timeMachine(request, response) {
         return;
     }
     const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/2.5/onecall/timemachine';
-    var url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
+    let url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
 
     if (request.query.lat) {
         url += '&lat=' + xss(request.query.lat);
@@ -23,7 +23,7 @@ function timeMachine(request, response) {
         url += '&lang=' + xss(request.query.lang);
     }
 
-    var config = {
+    let config = {
         method: 'get',
         url: url
     };

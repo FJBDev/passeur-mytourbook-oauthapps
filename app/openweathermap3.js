@@ -7,11 +7,11 @@ function timeMachine(request, response, isTimemachine) {
         response.status(400).send("Error");
         return;
     }
-    var openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/3.0/onecall';
+    let openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/3.0/onecall';
     if (isTimemachine) {
         openWeatherMapBaseUrl += '/timemachine';
     }
-    var url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
+    let url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
 
     if (request.query.lat) {
         url += '&lat=' + xss(request.query.lat);
@@ -26,7 +26,7 @@ function timeMachine(request, response, isTimemachine) {
         url += '&lang=' + xss(request.query.lang);
     }
 
-    var config = {
+    let config = {
         method: 'get',
         url: url
     };

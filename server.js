@@ -1,9 +1,9 @@
-var PORT = process.env.PORT || 5000;
-var express = require('express');
-var axios = require('axios');
-var qs = require('qs');
+let PORT = process.env.PORT || 5000;
+let express = require('express');
+let axios = require('axios');
+let qs = require('qs');
 const xss = require('xss');
-var app = express();
+let app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
@@ -59,17 +59,17 @@ app.post("/suunto/token", async (request, response) => {
 
   const suuntoCallbackUrl = 'http://localhost:4919';
 
-  var data = qs.stringify({
+  let data = qs.stringify({
     'grant_type': grant_type,
     'code': code,
     'redirect_uri': suuntoCallbackUrl,
     'refresh_token': refresh_token
   });
 
-  var clientId = process.env.SUUNTO_CLIENT_ID;
-  var clientSecret = process.env.SUUNTO_CLIENT_SECRET;
-  var authorizationHeader = 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
-  var config = {
+  let clientId = process.env.SUUNTO_CLIENT_ID;
+  let clientSecret = process.env.SUUNTO_CLIENT_SECRET;
+  let authorizationHeader = 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
+  let config = {
     method: 'post',
     url: 'https://cloudapi-oauth.suunto.com/oauth/token',
     headers: {
@@ -97,7 +97,7 @@ app.post("/suunto/route/import", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  var config = {
+  let config = {
     method: 'post',
     url: suuntoBaseUrl + '/route/import',
     headers: {
@@ -125,7 +125,7 @@ app.get("/suunto/workouts", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  var url = suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
+  let url = suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
   if (request.query.since) {
     url += '&since=' + xss(request.query.since);
   }
@@ -133,7 +133,7 @@ app.get("/suunto/workouts", async (request, response) => {
     url += '&until=' + xss(request.query.until);
   }
 
-  var config = {
+  let config = {
     method: 'get',
     url: url,
     headers: {
@@ -159,9 +159,9 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  var url = suuntoBaseUrl + '/workout/exportFit/' + xss(request.query.workoutKey);
+  let url = suuntoBaseUrl + '/workout/exportFit/' + xss(request.query.workoutKey);
 
-  var config = {
+  let config = {
     method: 'get',
     url: url,
     headers: {
@@ -216,7 +216,7 @@ app.get("/suunto/workout/upload/:Id", async (request, response) => getUploadStat
 app.get("/weatherapi", async (request, response) => {
 
   const weatherApiBaseUrl = 'http://api.weatherapi.com/v1/history.json';
-  var url = weatherApiBaseUrl + '?key=' + process.env.WEATHERAPI_KEY;
+  let url = weatherApiBaseUrl + '?key=' + process.env.WEATHERAPI_KEY;
 
   if (request.query.lat) {
     url += '&q=' + xss(request.query.lat);
@@ -234,7 +234,7 @@ app.get("/weatherapi", async (request, response) => {
     url += '&lang=' + xss(request.query.lang);
   }
 
-  var config = {
+  let config = {
     method: 'get',
     url: url
   };
