@@ -68,7 +68,7 @@ app.post("/suunto/token", async (request, response) => {
 
   let clientId = process.env.SUUNTO_CLIENT_ID;
   let clientSecret = process.env.SUUNTO_CLIENT_SECRET;
-  let authorizationHeader = 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
+  let authorizationHeader = `Basic ${Buffer.from(clientId + ':' + clientSecret).toString('base64')}`;
   let config = {
     method: 'post',
     url: 'https://cloudapi-oauth.suunto.com/oauth/token',
