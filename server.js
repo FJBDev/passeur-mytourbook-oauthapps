@@ -127,10 +127,10 @@ app.get("/suunto/workouts", async (request, response) => {
 
   let url = suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
   if (request.query.since) {
-    url += '&since=' + xss(request.query.since);
+    url += `&since=${xss(request.query.since)}`;
   }
   if (request.query.until) {
-    url += '&until=' + xss(request.query.until);
+    url += `&until=${xss(request.query.until)}`;
   }
 
   let config = {
@@ -216,22 +216,22 @@ app.get("/suunto/workout/upload/:Id", async (request, response) => getUploadStat
 app.get("/weatherapi", async (request, response) => {
 
   const weatherApiBaseUrl = 'http://api.weatherapi.com/v1/history.json';
-  let url = weatherApiBaseUrl + '?key=' + process.env.WEATHERAPI_KEY;
+  let url = `${weatherApiBaseUrl}?key=${process.env.WEATHERAPI_KEY}`;
 
   if (request.query.lat) {
-    url += '&q=' + xss(request.query.lat);
+    url += `&q=${xss(request.query.lat)}`;
   }
   if (request.query.lon) {
-    url += ',' + xss(request.query.lon);
+    url += `,${xss(request.query.lon)}`;
   }
   if (request.query.dt) {
-    url += '&dt=' + xss(request.query.dt);
+    url += `'&dt=${xss(request.query.dt)}`;
   }
   if (request.query.end_dt) {
-    url += '&end_dt=' + xss(request.query.end_dt);
+    url += `&end_dt=${xss(request.query.end_dt)}`;
   }
   if (request.query.lang) {
-    url += '&lang=' + xss(request.query.lang);
+    url += `&lang=${xss(request.query.lang)}`;
   }
 
   let config = {

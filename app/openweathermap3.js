@@ -11,7 +11,7 @@ function timeMachine(request, response, isTimemachine) {
     if (isTimemachine) {
         openWeatherMapBaseUrl += '/timemachine';
     }
-    let url = openWeatherMapBaseUrl + '?units=metric&appid=' + process.env.OPENWEATHERMAP_KEY;
+    let url = `${openWeatherMapBaseUrl}?units=metric&appid={process.env.OPENWEATHERMAP_KEY}`;
 
     if (request.query.lat) {
         url += `&lat=${xss(request.query.lat)}`;
@@ -20,10 +20,10 @@ function timeMachine(request, response, isTimemachine) {
         url += `&lon=${xss(request.query.lon)}`;
     }
     if (request.query.dt) {
-        url += '&dt=' + xss(request.query.dt);
+        url += `&dt=${xss(request.query.dt)}`;
     }
     if (request.query.lang) {
-        url += '&lang=' + xss(request.query.lang);
+        url += `&lang=${xss(request.query.lang)}`;
     }
 
     let config = {
@@ -45,4 +45,3 @@ function timeMachine(request, response, isTimemachine) {
 }
 
 module.exports = timeMachine;
-
