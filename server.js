@@ -92,7 +92,6 @@ app.post("/suunto/token", async (request, response) => {
 })
 
 const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2';
-const suuntoBaseUrlV3 = 'https://cloudapi.suunto.com/v3';
 app.post("/suunto/route/import", async (request, response) => {
 
   const { authorization } = request.headers;
