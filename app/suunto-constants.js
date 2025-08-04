@@ -5,11 +5,12 @@ function define(name, value) {
     });
 }
 
-define("suuntoBaseUrl", 'https://cloudapi.suunto.com/v2/');
+define("suuntoBaseUrl", 'https://cloudapi.suunto.com/');
+define("suuntoBaseV2", 'v2/');
+define("suuntoBaseV3", 'v3/');
 
 
-//TODO FB segregate the suunto route upload and file download to separate file
-
+//TODO FB
 // Segregate the strava endpoints
 
 // Unit tests for the workout import (using mock?)

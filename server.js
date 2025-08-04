@@ -12,7 +12,8 @@ const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js')
 const openWeatherMap3 = require('./app/openweathermap3.js');
 const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
 
-const { initializeUpload, getUploadStatus } = require('./app/suunto-workoutupload.js');
+const { initializeUpload, getUploadStatus } = require('./app/suunto-workout-upload.js');
+const { listWorkouts, exportWorkoutFit } = require('./app/suunto-workout-retrieval.js');
 
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
@@ -120,40 +121,6 @@ app.post("/suunto/route/import", async (request, response) => {
     });
 })
 
-app.get("/suunto/workouts", async (request, response) => {
-
-  const { authorization } = request.headers;
-
-  var url = suuntoBaseUrlV3 + '/workouts?limit=10000&filter-by-modification-time=false';
-  if (request.query.since) {
-    url += '&since=' + xss(request.query.since);
-  }
-  if (request.query.until) {
-    url += '&until=' + xss(request.query.until);
-  }
-
-  var config = {
-    method: 'get',
-    url: url,
-    headers: {
-      'Authorization': authorization,
-      'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
-    }
-  };
-
-  axios(config)
-    .then(function (result) {
-      response.status(200).send(result.data);
-    })
-    .catch(function (error) {
-      if (error.response) {
-        response.status(error.response.status).send(error.message);
-      } else {
-        response.status(400).send(error.message);
-      }
-    });
-})
-
 app.get("/suunto/workout/exportFit", async (request, response) => {
 
   const { authorization } = request.headers;
@@ -211,6 +178,8 @@ app.use("/openweathermap/air_pollution", async (request, response) => openWeathe
 
 app.post("/suunto/workout/upload", async (request, response) => initializeUpload(request, response));
 app.get("/suunto/workout/upload/:Id", async (request, response) => getUploadStatus(request, response));
+app.get("/suunto/workouts", async (request, response) => listWorkouts(request, response));
+app.get("/suunto/workout/:Id/Fit", async (request, response) => exportWorkoutFit(request, response));
 
 app.get("/weatherapi", async (request, response) => {
 
