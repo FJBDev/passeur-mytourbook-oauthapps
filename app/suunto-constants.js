@@ -1,14 +1,6 @@
-function define(name, value) {
-    Object.defineProperty(exports, name, {
-        value: value,
-        enumerable: true
-    });
-}
-
-define("suuntoBaseUrl", 'https://cloudapi.suunto.com/');
-define("suuntoBaseV2", 'v2/');
-define("suuntoBaseV3", 'v3/');
-
+export const SUUNTO_BASE_URL = "https://cloudapi.suunto.com/"
+export const SUUNTO_BASE_V2 = SUUNTO_BASE_URL + "v2/"
+export const SUUNTO_BASE_V3 =SUUNTO_BASE_URL + "v3/"
 
 //TODO FB
 // Segregate the strava endpoints
