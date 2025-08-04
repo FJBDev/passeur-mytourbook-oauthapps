@@ -91,6 +91,7 @@ app.post("/suunto/token", async (request, response) => {
 })
 
 const suuntoBaseUrl = 'https://cloudapi.suunto.com/v2';
+const suuntoBaseUrlV3 = 'https://cloudapi.suunto.com/v3';
 app.post("/suunto/route/import", async (request, response) => {
 
   const { authorization } = request.headers;
@@ -123,7 +124,7 @@ app.get("/suunto/workouts", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  var url = suuntoBaseUrl + '/workouts?limit=10000&filter-by-modification-time=false';
+  var url = suuntoBaseUrlV3 + '/workouts?limit=10000&filter-by-modification-time=false';
   if (request.query.since) {
     url += '&since=' + xss(request.query.since);
   }
@@ -157,7 +158,7 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  var url = suuntoBaseUrl + '/workout/exportFit/' + xss(request.query.workoutKey);
+  var url = suuntoBaseUrlV3 + '/workout/' + xss(request.query.workoutKey) + '/fit';
 
   var config = {
     method: 'get',
