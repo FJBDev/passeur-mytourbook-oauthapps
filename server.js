@@ -120,11 +120,13 @@ app.post("/suunto/route/import", async (request, response) => {
     });
 })
 
+
+//TODO FB To deprecate 2 versions after MT 25.8
 app.get("/suunto/workout/exportFit", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  var url = suuntoBaseUrlV3 + '/workout/' + xss(request.query.workoutKey) + '/fit';
+  var url = suuntoBaseUrl + '/workout/' + xss(request.query.workoutKey) + '/fit';
 
   var config = {
     method: 'get',
@@ -178,7 +180,7 @@ app.use("/openweathermap/air_pollution", async (request, response) => openWeathe
 app.post("/suunto/workout/upload", async (request, response) => initializeUpload(request, response));
 app.get("/suunto/workout/upload/:Id", async (request, response) => getUploadStatus(request, response));
 app.get("/suunto/workouts", async (request, response) => listWorkouts(request, response));
-app.get("/suunto/workout/:Id/Fit", async (request, response) => exportWorkoutFit(request, response));
+app.get("/suunto/workouts/:Id/Fit", async (request, response) => exportWorkoutFit(request, response));
 
 app.get("/weatherapi", async (request, response) => {
 
