@@ -37,13 +37,7 @@ function exportWorkoutFit(request, response) {
 
     const { authorization } = request.headers;
 
-    var url =  constants.SUUNTO_BASE_V3 + '/workouts?limit=10000&filter-by-modification-time=false';
-    if (request.query.since) {
-        url += '&since=' + xss(request.query.since);
-    }
-    if (request.query.until) {
-        url += '&until=' + xss(request.query.until);
-    }
+    var url = suuntoBaseUrlV3 + '/workout/' + xss(request.query.workoutKey) + '/fit';
 
     var config = {
         method: 'get',
@@ -51,11 +45,16 @@ function exportWorkoutFit(request, response) {
         headers: {
             'Authorization': authorization,
             'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
-        }
+        },
+        responseType: 'arraybuffer',
+        responseEncoding: 'binary'
     };
 
+    const contentDisposition = 'content-disposition';
     axios(config)
         .then(function (result) {
+            response.setHeader(contentDisposition, result.headers[contentDisposition]);
+
             response.status(200).send(result.data);
         })
         .catch(function (error) {
