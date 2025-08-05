@@ -5,10 +5,11 @@ function define(name, value) {
     });
 }
 
-define("suuntoBaseUrl", 'https://cloudapi.suunto.com/v2/');
+define("suuntoBaseV2", 'https://cloudapi.suunto.com/v2/');
+define("suuntoBaseV3", 'https://cloudapi.suunto.com/v3/');
 
 
-//TODO FB segregate the suunto route upload and file download to separate file
+//TODO FB 
 
 // Segregate the strava endpoints
 
