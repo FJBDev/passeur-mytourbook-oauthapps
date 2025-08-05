@@ -37,7 +37,7 @@ function exportWorkoutFit(request, response) {
 
     const { authorization } = request.headers;
 
-    var url = SUUNTO_BASE_V3 + '/workout/' + xss(request.query.workoutKey) + '/fit';
+    var url = constants.SUUNTO_BASE_V3 + '/workout/' + xss(request.query.workoutKey) + '/fit';
 
     var config = {
         method: 'get',
