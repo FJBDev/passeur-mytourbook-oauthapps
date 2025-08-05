@@ -1,11 +1,12 @@
 const axios = require('axios');
 var constants = require("./suunto-constants");
+import { SUUNTO_BASE_V3 } from './myModule.js';
 
 function listWorkouts(request, response) {
 
     const { authorization } = request.headers;
 
-    var url = constants.SUUNTO_BASE_V3 + '/workouts?limit=10000&filter-by-modification-time=false';
+    var url = SUUNTO_BASE_V3 + '/workouts?limit=10000&filter-by-modification-time=false';
     if (request.query.since) {
         url += '&since=' + xss(request.query.since);
     }
@@ -37,7 +38,7 @@ function exportWorkoutFit(request, response) {
 
     const { authorization } = request.headers;
 
-    var url = suuntoBaseUrlV3 + '/workout/' + xss(request.query.workoutKey) + '/fit';
+    var url = SUUNTO_BASE_V3 + '/workout/' + xss(request.query.workoutKey) + '/fit';
 
     var config = {
         method: 'get',
