@@ -7,7 +7,7 @@ function initializeUpload(request, response) {
 
     var config = {
         method: 'post',
-        url: constants.suuntoBaseV2 + '/upload/',
+        url: constants.suuntoBaseUrl + 'upload/',
         headers: {
             'Authorization': authorization,
             'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ function getUploadStatus(request, response) {
 
     const { authorization } = request.headers;
 
-    var url = constants.suuntoBaseV2 + '/upload/';
+    var url = constants.suuntoBaseUrl + 'upload/';
     if (request.params.Id) {
         url += request.params.Id;
     }
