@@ -61,4 +61,4 @@ function getUploadStatus(request, response) {
         });
 }
 
-export default { initializeUpload, getUploadStatus };
+module.exports = { initializeUpload, getUploadStatus };
