@@ -1,5 +1,5 @@
 const axios = require('axios');
-var constants = require("./suunto-constants");
+import { SUUNTO_BASE_V3 } from './myModule.js';
 
 function initializeUpload(request, response) {
 
