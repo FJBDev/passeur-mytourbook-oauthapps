@@ -180,7 +180,7 @@ app.use("/openweathermap/air_pollution", async (request, response) => openWeathe
 app.post("/suunto/workout/upload", async (request, response) => initializeUpload(request, response));
 app.get("/suunto/workout/upload/:Id", async (request, response) => getUploadStatus(request, response));
 app.get("/suunto/workouts", async (request, response) => listWorkouts(request, response));
-app.get("/suunto/workouts/:Id/Fit", async (request, response) => exportWorkoutFit(request, response));
+app.get("/suunto/workouts/:Id/fit", async (request, response) => exportWorkoutFit(request, response));
 
 app.get("/weatherapi", async (request, response) => {
 

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const xss = require('xss');
 var constants = require("./suunto-constants");
 
 function listWorkouts(request, response) {
@@ -37,7 +38,9 @@ function exportWorkoutFit(request, response) {
 
     const { authorization } = request.headers;
 
-    var url = constants.suuntoBaseV3 + '/workout/' + xss(request.query.workoutKey) + '/fit';
+    const workoutKey = request.url.match(/workouts\/(.*?)\/Fit/)[1];
+
+    var url = constants.suuntoBaseV3 + 'workouts/' + workoutKey + '/fit';
 
     var config = {
         method: 'get',
