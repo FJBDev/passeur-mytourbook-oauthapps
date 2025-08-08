@@ -14,6 +14,8 @@ const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js
 
 const { initializeUpload, getUploadStatus } = require('./app/suunto-workout-upload.js');
 const { listWorkouts, exportWorkoutFit } = require('./app/suunto-workout-retrieval.js');
+const { initializeUpload, getUploadStatus } = require('./app/suunto-workout-upload.js');
+const { listWorkouts, exportWorkoutFit } = require('./app/suunto-workout-retrieval.js');
 
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
@@ -120,6 +122,8 @@ app.post("/suunto/route/import", async (request, response) => {
     });
 })
 
+
+//TODO FB To deprecate 2 versions after MT 25.8
 
 //TODO FB To deprecate 2 versions after MT 25.8
 app.get("/suunto/workout/exportFit", async (request, response) => {
