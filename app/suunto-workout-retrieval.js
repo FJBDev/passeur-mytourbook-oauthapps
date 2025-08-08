@@ -1,4 +1,5 @@
 const axios = require('axios');
+const xss = require('xss');
 var constants = require("./suunto-constants");
 
 function listWorkouts(request, response) {
