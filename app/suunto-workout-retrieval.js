@@ -38,7 +38,7 @@ function exportWorkoutFit(request, response) {
 
     const { authorization } = request.headers;
 
-    const workoutKey = request.url.match(/workouts\/(.*?)\/Fit/)[1];
+    const workoutKey = request.url.match(/workouts\/(.*?)\/fit/)[1];
 
     var url = constants.suuntoBaseV3 + 'workouts/' + workoutKey + '/fit';
 
