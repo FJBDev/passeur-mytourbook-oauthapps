@@ -8,7 +8,6 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
-const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js');
 const openWeatherMap3 = require('./app/openweathermap3.js');
 const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
 
