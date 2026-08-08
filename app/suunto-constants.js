@@ -10,7 +10,4 @@ define("suuntoBaseV3", 'https://cloudapi.suunto.com/v3/');
 
 
 //TODO FB 
-
-// Segregate the strava endpoints
-
 // Unit tests for the workout import (using mock?)

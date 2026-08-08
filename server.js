@@ -22,35 +22,6 @@ app.get('/', async (request, response) => {
   response.redirect('http://mytourbook.sourceforge.net/mytourbook/');
 })
 
-const stravaClient = new AuthorizationCode({
-  client: {
-    id: process.env.STRAVA_CLIENT_ID,
-    secret: process.env.STRAVA_CLIENT_SECRET
-  },
-  auth: {
-    tokenHost: 'https://www.strava.com/api/v3'
-  },
-  options: {
-    authorizationMethod: 'body'
-  }
-});
-
-app.post("/strava/token", async (request, response) => {
-  const { code, refresh_token, grant_type } = request.body;
-
-  const tokenResponse = await retrieveStravaToken(grant_type, code, refresh_token);
-
-  if (tokenResponse == null) {
-    response.status(400).send();
-    return;
-  }
-
-  let tokenCopy = JSON.parse(JSON.stringify(tokenResponse));
-  tokenCopy.expires_at = tokenResponse.token.expires_at.getTime().toString();
-
-  response.status(201).send(tokenCopy);
-})
-
 app.post("/suunto/token", async (request, response) => {
 
   const { code, refresh_token, grant_type } = request.body;
@@ -153,23 +124,6 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
       }
     });
 })
-
-async function retrieveStravaToken(grantType, code, refreshToken) {
-  options = {
-    code: code,
-    refresh_token: refreshToken,
-    grant_type: grantType
-  };
-
-  try {
-
-    const tokenResponse = await stravaClient.getToken(options);
-
-    return tokenResponse;
-  } catch (error) {
-    console.error('Access Token Error', error.message);
-  }
-}
 
 app.use("/openweathermap/3.0/timemachine", async (request, response) => openWeatherMap3(request, response, true));
 app.use("/openweathermap/3.0/current", async (request, response) => openWeatherMap3(request, response, false));
