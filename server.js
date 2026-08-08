@@ -8,11 +8,11 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
 
-const openWeatherMapTimeMachine = require('./app/openweathermap-timemachine.js');
 const openWeatherMap3 = require('./app/openweathermap3.js');
 const openWeatherMapAirPollution = require('./app/openweathermap-airpollution.js');
 
-const { initializeUpload, getUploadStatus } = require('./app/suunto-workoutupload.js');
+const { initializeUpload, getUploadStatus } = require('./app/suunto-workout-upload.js');
+const { listWorkouts, exportWorkoutFit } = require('./app/suunto-workout-retrieval.js');
 
 app.listen(PORT, () => {
   console.log(`Currently listening to any requests from MyTourbook`);
@@ -20,37 +20,6 @@ app.listen(PORT, () => {
 
 app.get('/', async (request, response) => {
   response.redirect('http://mytourbook.sourceforge.net/mytourbook/');
-})
-
-const stravaClient = new AuthorizationCode({
-  client: {
-    id: process.env.STRAVA_CLIENT_ID,
-    secret: process.env.STRAVA_CLIENT_SECRET
-  },
-  auth: {
-    tokenHost: 'https://www.strava.com/api/v3'
-  },
-  options: {
-    authorizationMethod: 'body'
-  }
-});
-
-app.post("/strava/token", async (request, response) => {
-
-  const { code, refresh_token, grant_type } = request.body;
-
-  console.log("TOTOJBGKJBDEGGLKHBHHRGHGRHKG");
-  const tokenResponse = await retrieveStravaToken(grant_type, code, refresh_token);
-
-  if (tokenResponse == null) {
-    response.status(400).send();
-    return;
-  }
-
-  let tokenCopy = JSON.parse(JSON.stringify(tokenResponse));
-  tokenCopy.expires_at = tokenResponse.token.expires_at.getTime().toString();
-
-  response.status(201).send(tokenCopy);
 })
 
 app.post("/suunto/token", async (request, response) => {
@@ -121,40 +90,7 @@ app.post("/suunto/route/import", async (request, response) => {
     });
 })
 
-app.get("/suunto/workouts", async (request, response) => {
-
-  const { authorization } = request.headers;
-
-  let url = `${suuntoBaseUrl}/workouts?limit=10000&filter-by-modification-time=false`;
-  if (request.query.since) {
-    url += `&since=${xss(request.query.since)}`;
-  }
-  if (request.query.until) {
-    url += `&until=${xss(request.query.until)}`;
-  }
-
-  let config = {
-    method: 'get',
-    url: url,
-    headers: {
-      'Authorization': authorization,
-      'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
-    }
-  };
-
-  axios(config)
-    .then(function (result) {
-      response.status(200).send(result.data);
-    })
-    .catch(function (error) {
-      if (error.response) {
-        response.status(error.response.status).send(error.message);
-      } else {
-        response.status(400).send(error.message);
-      }
-    });
-})
-
+//TODO FB To deprecate 2 versions after MT 25.8
 app.get("/suunto/workout/exportFit", async (request, response) => {
 
   const { authorization } = request.headers;
@@ -188,30 +124,14 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
     });
 })
 
-async function retrieveStravaToken(grantType, code, refreshToken) {
-  options = {
-    code: code,
-    refresh_token: refreshToken,
-    grant_type: grantType
-  };
-
-  try {
-
-    const tokenResponse = await stravaClient.getToken(options);
-
-    return tokenResponse;
-  } catch (error) {
-    console.error('Access Token Error', error.message);
-  }
-}
-
-app.use("/openweathermap/timemachine", async (request, response) => openWeatherMapTimeMachine(request, response));
 app.use("/openweathermap/3.0/timemachine", async (request, response) => openWeatherMap3(request, response, true));
 app.use("/openweathermap/3.0/current", async (request, response) => openWeatherMap3(request, response, false));
 app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
 
 app.post("/suunto/workout/upload", async (request, response) => initializeUpload(request, response));
 app.get("/suunto/workout/upload/:Id", async (request, response) => getUploadStatus(request, response));
+app.get("/suunto/workouts", async (request, response) => listWorkouts(request, response));
+app.get("/suunto/workouts/:Id/fit", async (request, response) => exportWorkoutFit(request, response));
 
 app.get("/weatherapi", async (request, response) => {
 
