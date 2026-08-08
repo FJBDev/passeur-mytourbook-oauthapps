@@ -1,10 +1,14 @@
 const axios = require('axios');
 const xss = require('xss');
 
-function airPollution(request, response) {
+function timeMachine(request, response) {
 
-    const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/2.5/air_pollution/history';
-    let url = `${openWeatherMapBaseUrl}?appid=${process.env.OPENWEATHERMAP_KEY}`;
+    if (!request.query.units || xss(request.query.units) !== 'metric') {
+        response.status(400).send("Error");
+        return;
+    }
+    const openWeatherMapBaseUrl = 'https://api.openweathermap.org/data/2.5/onecall/timemachine';
+    let url = `${openWeatherMapBaseUrl}?units=metric&appid=${process.env.OPENWEATHERMAP_KEY}`;
 
     if (request.query.lat) {
         url += `&lat=${xss(request.query.lat)}`;
@@ -12,12 +16,13 @@ function airPollution(request, response) {
     if (request.query.lon) {
         url += `&lon=${xss(request.query.lon)}`;
     }
-    if (request.query.start) {
-        url += `&start=${xss(request.query.start)}`;
+    if (request.query.dt) {
+        url += `&dt=${xss(request.query.dt)}`;
     }
-    if (request.query.end) {
-        url += `&end=${xss(request.query.end)}`;
+    if (request.query.lang) {
+        url += `&lang=${xss(request.query.lang)}`;
     }
+
     let config = {
         method: 'get',
         url: url
@@ -36,4 +41,5 @@ function airPollution(request, response) {
         });
 }
 
-module.exports = airPollution;
+module.exports = timeMachine;
+

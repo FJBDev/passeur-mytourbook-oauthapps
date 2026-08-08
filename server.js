@@ -1,9 +1,9 @@
-var PORT = process.env.PORT || 5000;
-var express = require('express');
-var axios = require('axios');
-var qs = require('qs');
+let PORT = process.env.PORT || 5000;
+let express = require('express');
+let axios = require('axios');
+let qs = require('qs');
 const xss = require('xss');
-var app = express();
+let app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }));// for parsing application/json
 const { AuthorizationCode } = require('simple-oauth2');
@@ -28,17 +28,17 @@ app.post("/suunto/token", async (request, response) => {
 
   const suuntoCallbackUrl = 'http://localhost:4919';
 
-  var data = qs.stringify({
+  let data = qs.stringify({
     'grant_type': grant_type,
     'code': code,
     'redirect_uri': suuntoCallbackUrl,
     'refresh_token': refresh_token
   });
 
-  var clientId = process.env.SUUNTO_CLIENT_ID;
-  var clientSecret = process.env.SUUNTO_CLIENT_SECRET;
-  var authorizationHeader = 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
-  var config = {
+  let clientId = process.env.SUUNTO_CLIENT_ID;
+  let clientSecret = process.env.SUUNTO_CLIENT_SECRET;
+  let authorizationHeader = `Basic ${Buffer.from(clientId + ':' + clientSecret).toString('base64')}`;
+  let config = {
     method: 'post',
     url: 'https://cloudapi-oauth.suunto.com/oauth/token',
     headers: {
@@ -66,7 +66,7 @@ app.post("/suunto/route/import", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  var config = {
+  let config = {
     method: 'post',
     url: suuntoBaseUrl + '/route/import',
     headers: {
@@ -90,7 +90,6 @@ app.post("/suunto/route/import", async (request, response) => {
     });
 })
 
-
 app.use("/openweathermap/3.0/timemachine", async (request, response) => openWeatherMap3(request, response, true));
 app.use("/openweathermap/3.0/current", async (request, response) => openWeatherMap3(request, response, false));
 app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
@@ -103,25 +102,25 @@ app.get("/suunto/workouts/:Id/fit", async (request, response) => exportWorkoutFi
 app.get("/weatherapi", async (request, response) => {
 
   const weatherApiBaseUrl = 'http://api.weatherapi.com/v1/history.json';
-  var url = weatherApiBaseUrl + '?key=' + process.env.WEATHERAPI_KEY;
+  let url = `${weatherApiBaseUrl}?key=${process.env.WEATHERAPI_KEY}`;
 
   if (request.query.lat) {
-    url += '&q=' + xss(request.query.lat);
+    url += `&q=${xss(request.query.lat)}`;
   }
   if (request.query.lon) {
-    url += ',' + xss(request.query.lon);
+    url += `,${xss(request.query.lon)}`;
   }
   if (request.query.dt) {
-    url += '&dt=' + xss(request.query.dt);
+    url += `'&dt=${xss(request.query.dt)}`;
   }
   if (request.query.end_dt) {
-    url += '&end_dt=' + xss(request.query.end_dt);
+    url += `&end_dt=${xss(request.query.end_dt)}`;
   }
   if (request.query.lang) {
-    url += '&lang=' + xss(request.query.lang);
+    url += `&lang=${xss(request.query.lang)}`;
   }
 
-  var config = {
+  let config = {
     method: 'get',
     url: url
   };
