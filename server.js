@@ -95,7 +95,7 @@ app.get("/suunto/workout/exportFit", async (request, response) => {
 
   const { authorization } = request.headers;
 
-  let url = `${suuntoBaseUrl}/workout/exportFit/${xss(request.query.workoutKey)}`;
+  let url = suuntoBaseUrl + '/workout/exportFit/' + xss(request.query.workoutKey);
 
   let config = {
     method: 'get',
