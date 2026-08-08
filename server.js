@@ -91,40 +91,6 @@ app.post("/suunto/route/import", async (request, response) => {
 })
 
 
-//TODO FB To deprecate 2 versions after MT 25.8
-app.get("/suunto/workout/exportFit", async (request, response) => {
-
-  const { authorization } = request.headers;
-
-  var url = suuntoBaseUrl + '/workout/exportFit/' + xss(request.query.workoutKey);
-
-  var config = {
-    method: 'get',
-    url: url,
-    headers: {
-      'Authorization': authorization,
-      'Ocp-Apim-Subscription-Key': process.env.SUUNTO_SUBSCRIPTION_KEY
-    },
-    responseType: 'arraybuffer',
-    responseEncoding: 'binary'
-  };
-
-  const contentDisposition = 'content-disposition';
-  axios(config)
-    .then(function (result) {
-      response.setHeader(contentDisposition, result.headers[contentDisposition]);
-
-      response.status(200).send(result.data);
-    })
-    .catch(function (error) {
-      if (error.response) {
-        response.status(error.response.status).send(error.message);
-      } else {
-        response.status(400).send(error.message);
-      }
-    });
-})
-
 app.use("/openweathermap/3.0/timemachine", async (request, response) => openWeatherMap3(request, response, true));
 app.use("/openweathermap/3.0/current", async (request, response) => openWeatherMap3(request, response, false));
 app.use("/openweathermap/air_pollution", async (request, response) => openWeatherMapAirPollution(request, response));
