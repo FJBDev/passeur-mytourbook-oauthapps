@@ -19,7 +19,7 @@
     "xss": "^1.0.16"
   },
   "engines": {
-    "node": "20.12.2"
+    "node": "26.12.1"
   },
   "devDependencies": {
     "jest": "^30.5.2",
