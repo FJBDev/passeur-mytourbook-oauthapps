@@ -23,10 +23,10 @@
     "xss": "^1.0.15"
   },
   "engines": {
-    "node": "20.12.2"
+    "node": "26.12.1"
   },
   "devDependencies": {
-    "jest": "^30.4.2",
+     "jest": "^30.5.2",
     "supertest": "^7.2.2"
   },
   "overrides": {
